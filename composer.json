@@ -1,0 +1,22 @@
+{
+    "name": "agoalofalife/bpm-online",
+    "description": "Using the API BPM",
+    "type": "no",
+    "license": "MIT",
+    "version" : "1.0.0",
+    "minimum-stability": "dev",
+    "require": {
+        "beberlei/assert": "^2.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "agoalofalife\\bpmOnline\\": ""
+        },
+        "files": [
+            "helpers/helpers.php"
+        ]
+    }
+}
