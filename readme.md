@@ -28,6 +28,7 @@ The package uses the Laravel framework and its environment
 
 <a name="Installation"></a>
 ## Installation
+composer require agoalofalife/bpm-online
 
 To work correctly you need to write two providers if file app/config.php : 
 
