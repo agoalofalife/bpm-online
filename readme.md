@@ -45,7 +45,7 @@ And one facade :
 
 You will need to set up your configuration file
 
-	 php artisan config:publish 
+	 php artisan vendor:publish 
 
 
 <a name="Bases request"></a>
