@@ -31,7 +31,6 @@ The package uses the Laravel framework and its environment
 
 To work correctly you need to write two providers if file app/config.php : 
 
-
 	agoalofalife\bpmOnline\bpmOnlineServiceProvider::class
         agoalofalife\bpmOnline\bpmRegisterServiceProvider::class
 
@@ -70,7 +69,9 @@ The second parameter specifies the format of the request, there are only two XML
 ### Select
 Sample rich methods
 	amount  	  : If you want the request to return more than 40 records at a time, it can be implemented using the parameter $ top
+	
 	skip    	  : In bpm'online support the use of parameter $ the skip , which allows you to query the service resources , skipping the specified number of entries.
+	
 	orderby 	  : Service resources can be obtained in the form of sort.
 	filterConstructor : Request the type of filter,Design   filterConstructor allows you to build logical expressions the conditions selecting the desired object , Expressions filterConstructor can be used to reference the properties and literals , as well as strings, numbers and Boolean expressions (true, false). Expressions $ filter supports arithmetic , logical operations , and operations groups ,strings , date and time of the operation.
 	guid		  :  For a sample of a particular object on the guid
