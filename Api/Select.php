@@ -115,7 +115,7 @@ class Select extends ApiBpm
     {
     }
     /**
-     * For a sample of a particular object on the guid
+     *
      * @param $guid
      * @return Select
      */

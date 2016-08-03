@@ -4,46 +4,46 @@ return [
 |--------------------------------------------------------------------------
 | URL API Registration Bpm
 |--------------------------------------------------------------------------
-| URL для получения куки,для дальнейшей аутентификации,для API Bpm
-|
+| URL for a cookie, for further authentication for API Bpm
+|   https://ourSite.bpmonline.com/ServiceModel/AuthService.svc/Login
 */
-    'UrlLogin'=>'https://ikratkoe.bpmonline.com/ServiceModel/AuthService.svc/Login',
+    'UrlLogin'=>'',
 
 /*
 |--------------------------------------------------------------------------
 | Login API Registration Bpm
 |--------------------------------------------------------------------------
-| Login для получения куки,для дальнейшей аутентификации,для API Bpm
+| Login for cookies, for further authentication for API Bpm
 |
 */
     
-    'Login'=>'api',
+    'Login'=>'',
     
 /*
 |--------------------------------------------------------------------------
 | Password API Registration Bpm
 |--------------------------------------------------------------------------
-| Password для получения куки,для дальнейшей аутентификации,для API Bpm
+| Password for cookies, for further authentication for API Bpm
 |
 */
     
-    'Password'=>'welcome2ik',
+    'Password'=>'',
     
 /*
 |--------------------------------------------------------------------------
 | URL Our Bpm
 |--------------------------------------------------------------------------
-| Адрес домашнего BPM
-|
+| Home Address BPM
+|   https://ourSite.bpmonline.com/0/ServiceModel/EntityDataService.svc/
 */
 
-    'UrlHome'=>'https://ikratkoe.bpmonline.com/0/ServiceModel/EntityDataService.svc/',
+    'UrlHome'=>'',
 
 /*
 |--------------------------------------------------------------------------
 | Namespaces XML API BPM
 |--------------------------------------------------------------------------
-| Наймспэйс в BPM API для парсинга ответа XML
+| Namespaces in BPM API to parse the XML response
 |
 */
 
@@ -56,7 +56,7 @@ return [
 |--------------------------------------------------------------------------
 | List Namespaces for post request in BPM
 |--------------------------------------------------------------------------
-|
+|   Namespaces To specify a file in XML
 |
 */
     'listNamespaces' => [
