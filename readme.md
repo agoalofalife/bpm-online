@@ -138,11 +138,14 @@ Removal is quite simple
 ### Handler  Responce
 
 Each request code obrabavtyvaet answer in the form of easy to read, there are a few answers custom transformations
+
    For XML : 
 	 ->getData()
+	 
    For JSON : 
 	->toArray()
 	->json()
+	
   For All  :  
 	->CollectData()
 	
