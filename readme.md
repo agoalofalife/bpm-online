@@ -17,7 +17,9 @@
 ## Description
 
 The wrapper for use with API Terrasoft
-Link to the documentation on http https://academy.terrasoft.ru/documents/technic-sdk/7-8-0/rabota-s-obektami-bpmonline-po-protokolu-odata-s-ispolzovaniem-http
+Link to the documentation on http
+
+https://academy.terrasoft.ru/documents/technic-sdk/7-8-0/rabota-s-obektami-bpmonline-po-protokolu-odata-s-ispolzovaniem-http
 
 The package uses the Laravel framework and its environment
 
@@ -86,13 +88,13 @@ more complex structures..
 	     $api->select()->guid('00000000-0000-0000-0000-000000000000')->run();
 
 
- 	    $api        = new ApiBpm('Case','json');
+ 	    $api         = new ApiBpm('Case','json');
 	    $api->select()->filterConstructor('Id eq guid\'00000000-0000-0000-0000-000000000000\'')->run();
 
-  	    $api       = new ApiBpm('Case','json');
+  	    $api         = new ApiBpm('Case','json');
 	    $api->select()->orderby('Number','desc')->run();
 
-	    $api       = new ApiBpm('Case','json');
+	    $api         = new ApiBpm('Case','json');
 	    $api->select()->skip(40)->amount(2)->orderby('Number','desc')->run();		
 
 
