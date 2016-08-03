@@ -1,6 +1,8 @@
-# Console Commands
+# Http Terrasoft API
 
-- [Introduction](#introduction)
+
+- [Description](#Description)
+- [Installation](#Installation)
 - [Writing Commands](#writing-commands)
     - [Generating Commands](#generating-commands)
     - [Command Structure](#command-structure)
@@ -17,8 +19,28 @@
 - [Programatically Executing Commands](#programatically-executing-commands)
     - [Calling Commands From Other Commands](#calling-commands-from-other-commands)
 
-<a name="introduction"></a>
-## Introduction
+<a name="Description"></a>
+## Description
+
+The wrapper for use with API Terrasoft
+Link to the documentation on http [https://academy.terrasoft.ru/documents/technic-sdk/7-8-0/rabota-s-obektami-bpmonline-po-protokolu-odata-s-ispolzovaniem-http]
+The package uses the Laravel framework and its environment
+
+###### If you find a bug or something else (and you always have) I ask you to contact me by mail agoalofalife@gmail.com
+
+
+<a name="Installation"></a>
+## Installation
+
+To work correctly you need to write two providers if file app/config.php : 
+
+
+	agoalofalife\bpmOnline\bpmOnlineServiceProvider::class
+        agoalofalife\bpmOnline\bpmRegisterServiceProvider::class
+
+And one facade : 
+
+	CookieBpm' => agoalofalife\bpmOnline\Facade\Authentication::class
 
 Artisan is the command-line interface included with Laravel. It provides a number of helpful commands that can assist you while you build your application. To view a list of all available Artisan commands, you may use the `list` command:
 
