@@ -91,7 +91,7 @@ class AuthenticationCookies implements Authentication
      */
     public function getCookieCache()
     {
-        if (Cache::has('AuthApiBpmCookie')) {
+        if (Cache::has('AuthApiBpmCookie') && !empty(Cache::get('AuthApiBpmCookie'))) {
             return Cache::get('AuthApiBpmCookie');
         } else {
             $this->UpdateCookie();
