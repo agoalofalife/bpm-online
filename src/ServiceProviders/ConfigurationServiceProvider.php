@@ -9,6 +9,9 @@ class ConfigurationServiceProvider implements ServiceProvider
 {
     public function register()
     {
-        app()->instance('config', new Repository());
+        if ( app()->resolved('config') === false )
+        {
+            app()->instance('config', new Repository());
+        }
     }
 }

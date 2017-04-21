@@ -4,15 +4,18 @@ namespace agoalofalife\bpm;
 use agoalofalife\bpm\Contracts\SourceConfiguration;
 use agoalofalife\bpm\ServiceProviders\ConfigurationServiceProvider;
 
-class Kernel
+
+class KernelBpm
 {
-
-
     protected $serviceProviders = [
         ConfigurationServiceProvider::class
     ];
 
-    public function setConfiguration(SourceConfiguration $configuration)
+    public function __construct()
+    {
+        $this->bootstrapping();
+    }
+    public function loadConfiguration(SourceConfiguration $configuration)
     {
         config()->set($configuration->getName(), $configuration->get());
     }
@@ -21,7 +24,7 @@ class Kernel
     {
         foreach ($this->serviceProviders as $provider)
         {
-            $provider->register();
+            (new $provider)->register();
         }
     }
 }

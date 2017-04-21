@@ -15,7 +15,8 @@
         "beberlei/assert": "^2.5",
         "illuminate/container": "^5.5",
         "illuminate/support": "^5.5",
-        "illuminate/config": "^5.5@dev"
+        "illuminate/config": "^5.5@dev",
+        "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.6",
@@ -25,7 +26,7 @@
     "autoload": {
         "psr-4": {
             "agoalofalife\\bpmOnline\\": "",
-            "agoalofalife\\bpm\\" : "src/"
+            "agoalofalife\\bpm\\" : "src"
         },
         "files": [
             "helpers/helpers.php"
