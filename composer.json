@@ -1,10 +1,16 @@
 {
     "name": "agoalofalife/bpm-online",
-    "description": "Using the API BPM",
+    "description": "Using the API BPM Terrasoft",
     "type": "no",
     "license": "MIT",
     "version" : "1.0.0",
     "minimum-stability": "dev",
+    "keywords": [
+        "bpm-online",
+        "terrasoft-http",
+        "bpm",
+        "terrasoft"
+    ],
     "require": {
         "beberlei/assert": "^2.5"
     },
