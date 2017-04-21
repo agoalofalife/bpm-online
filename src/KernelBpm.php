@@ -3,6 +3,7 @@ namespace agoalofalife\bpm;
 
 use agoalofalife\bpm\Actions\Read;
 use agoalofalife\bpm\Contracts\SourceConfiguration;
+use agoalofalife\bpm\ServiceProviders\ActionsServiceProviders;
 use agoalofalife\bpm\ServiceProviders\ConfigurationServiceProvider;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
@@ -30,7 +31,8 @@ class KernelBpm
      * list providers for pre bootstrapping packages
      */
     protected $serviceProviders = [
-        ConfigurationServiceProvider::class
+        ConfigurationServiceProvider::class,
+        ActionsServiceProviders::class
     ];
 
     public function __construct()
@@ -58,8 +60,11 @@ class KernelBpm
     {
         if ( Assertion::classExists($action = $this->action[$action]) )
         {
-            call_user_func($callback,  app()->make($this->action[$action]));
+            $action =  app()->make( $action );
+            call_user_func($callback, $action);
+            $this->currentAction = $action;
         }
+        return $this;
     }
 
     /**
@@ -68,7 +73,8 @@ class KernelBpm
      */
     public function get()
     {
-        $this->currentAction;
+        // here query in BPM
+        return $this->currentAction->getData();
     }
 
     /**

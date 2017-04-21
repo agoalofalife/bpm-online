@@ -22,11 +22,14 @@ $test->setConfigManually('apiBpm', [
         'Login'    => '',
         'Password' => '',
         'UrlHome'  => ''
-] );
+]);
+
 // 3, Setting collection
 $test->setCollection('SomeCollection');
 
 
-$test->action('select', function ($select){
-    return $select->filterConstructor()->guid();
+$test = $test->action('read', function ($select){
+     $select->skip(40)->amount(2)->orderby('Number','desc');
 })->get();
+
+dd($test);
