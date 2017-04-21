@@ -1,9 +1,12 @@
 <?php
-    namespace agoalofalife\bpmOnline\Api;
+namespace agoalofalife\bpmOnline\Api;
 
 use agoalofalife\bpmOnline\Facade\Authentication as CookieBpm;
 use Assert\Assertion;
 use agoalofalife\bpmOnline\Contract\CreatorData;
+use Illuminate\Config\Repository;
+use Illuminate\Container\Container;
+
 /***
  * @documentation BPM https://academy.terrasoft.ru/documents/technic-sdk/7-8-0/rabota-s-obektami-bpmonline-po-protokolu-odata-s-ispolzovaniem-http
  * Class ApiBpm
@@ -62,6 +65,7 @@ class ApiBpm
      */
     public function __construct($collection = null, $format = null)
     {
+
         $this->checkStartParameters($collection, $format);
         $this->format           = strtolower($format);
         $this->typeCollection   = $collection;
@@ -262,6 +266,32 @@ class ApiBpm
             $this->curl();
         } else {
             return true;
+        }
+    }
+
+    /**
+     * Bootstrap classes
+     */
+    private function bootstrapping()
+    {
+        if ( app()->resolved('config') === false )
+        {
+            app()->instance('config', new Repository());
+        }
+    }
+
+    private function loadConfiguration()
+    {
+        $pathToConfig = $_SERVER['PWD'] . '/config';
+
+        foreach ( scandir($pathToConfig) as $file)
+        {
+             if ( preg_match('/.php/', $file) )
+             {
+                 $nameFile = preg_replace('/.php/', '', $file);
+
+                 app('config')->set($nameFile,  require_once $pathToConfig . '/'.$file);
+             }
         }
     }
 }
