@@ -12,4 +12,6 @@ interface Action
     public function getData();
 
     public function injectionKernel(KernelBpm $bpm);
+
+    public function query();
 }

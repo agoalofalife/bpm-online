@@ -2,8 +2,11 @@
 namespace agoalofalife\bpm\Assistants;
 
 use agoalofalife\bpm\Contracts\Authentication;
-use GuzzleHttp\Client;
 
+/**
+ * Class CookieAuthentication
+ * @package agoalofalife\bpm\Assistants
+ */
 class CookieAuthentication implements Authentication
 {
     protected $pathToCookieFile = __DIR__ . '/../resource/cookie.txt';
@@ -14,29 +17,15 @@ class CookieAuthentication implements Authentication
         $this->configuration = $config;
     }
 
-    public function authOld()
+    public function getPathCookieFile()
     {
-        $client   = new Client();
-        $response =  $client->request('POST', $this->configuration['UrlLogin'], [
-            'curl' =>[
-                CURLOPT_COOKIEJAR => './cookie.txt',
-            ],
-            'headers' => [
-                "Content-type: application/json",
-                "POST  HTTP/1.0"
-            ],
-            'json' => [
-                'UserName'      => $this->configuration['Login'],
-                'UserPassword'  => $this->configuration['Password'],
-                'SolutionName'  => 'TSBpm',
-                'TimeZoneOffset'=> '-120',
-                'Language'      => 'Ru-ru'
-            ]
-        ]);
-        $body = $response->getBody();
-        dd( $body->getContents());
+        return $this->pathToCookieFile;
     }
 
+    public function refresh()
+    {
+        $this->auth();
+    }
     public function auth()
     {
         $curl    = curl_init();
@@ -52,16 +41,14 @@ class CookieAuthentication implements Authentication
         curl_setopt($curl, CURLOPT_COOKIEJAR, $this->pathToCookieFile);
 
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode(array(
-            'UserName'      => $this->configuration['Login'],
-            'UserPassword'  => $this->configuration['Password'],
-            'SolutionName'  => 'TSBpm',
-            'TimeZoneOffset'=> '-120',
-            'Language'      => 'Ru-ru')));
+            'UserName'       => $this->configuration['Login'],
+            'UserPassword'   => $this->configuration['Password'],
+            'SolutionName'   => 'TSBpm',
+            'TimeZoneOffset' => '-120',
+            'Language'       => 'Ru-ru')));
 
-        $Response = curl_exec($curl);
+        curl_exec($curl);
         curl_close($curl);
-//        preg_match('~\ \.ASPXAUTH.*?(?=;)~', $Response, $cookies);
-//        $this->putCookie($cookies);
-//        $this->writeCookieFileCache();
+
     }
 }

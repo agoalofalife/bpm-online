@@ -5,6 +5,8 @@ use agoalofalife\bpm\Actions\Create;
 use agoalofalife\bpm\Actions\Read;
 use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\Contracts\SourceConfiguration;
+use agoalofalife\bpm\Handlers\JsonHandler;
+use agoalofalife\bpm\Handlers\XmlHandler;
 use agoalofalife\bpm\ServiceProviders\ActionsServiceProviders;
 use agoalofalife\bpm\ServiceProviders\AuthenticationServiceProvider;
 use agoalofalife\bpm\ServiceProviders\ConfigurationServiceProvider;
@@ -22,12 +24,13 @@ class KernelBpm
     ];
 
     protected $handlers = [
-      'xml'  => '',
-      'json' => '',
+      'xml'  => XmlHandler::class,
+      'json' => JsonHandler::class,
     ];
 
     protected $collection;
     protected $currentAction;
+    protected $currentHandler;
     protected $url;
 
     /**
@@ -64,6 +67,14 @@ class KernelBpm
         return $this->collection;
     }
 
+    /**
+     * @return string
+     */
+    public function getPrefixConfig()
+    {
+        return $this->prefixConfiguration;
+    }
+
     public function loadConfiguration(SourceConfiguration $configuration)
     {
         config()->set(  $this->prefixConfiguration = $configuration->getName(), $configuration->get());
@@ -80,13 +91,20 @@ class KernelBpm
         config()->set($key, $array);
     }
 
+    public function getHandler()
+    {
+        return $this->currentHandler;
+    }
+
     public function action($action, callable $callback)
     {
         extract($this->splitAction($action));
 
-        if ( Assertion::classExists($action = $this->action[$action]) )
+        if ( Assertion::classExists($action = $this->action[$action])  && Assertion::classExists($handler = $this->handlers[$handler]) )
         {
-            $action =  app()->make( $action );
+            $action               =  app()->make( $action );
+            $this->currentHandler =  app()->make( $handler );
+
             $action->injectionKernel($this);
             call_user_func($callback, $action);
             $this->currentAction = $action;
@@ -113,7 +131,7 @@ class KernelBpm
         try {
             Assertion::regex($collection, '/[A-z]+Collection$/');
         } catch(AssertionFailedException $e) {
-            echo "Expected word 'collection' in parameter method setCollection received : " .  $e->getValue();
+            echo "Expected word 'Collection' in parameter method setCollection received : " .  $e->getValue();
         }
 
         $this->collection = $collection;

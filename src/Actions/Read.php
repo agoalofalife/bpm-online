@@ -2,10 +2,12 @@
 namespace agoalofalife\bpm\Actions;
 
 use agoalofalife\bpm\Contracts\Action;
+use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\KernelBpm;
 use Assert\Assert;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
+use GuzzleHttp\Client;
 
 class Read implements Action
 {
@@ -29,7 +31,7 @@ class Read implements Action
      */
     public function getData()
     {
-        return ['http_type' => $this->HTTP_TYPE, 'url' => $this->url];
+       return $this->query();
     }
 
     /**
@@ -139,31 +141,25 @@ class Read implements Action
         return $this;
     }
 
-    protected function curl()
+
+    public function query()
     {
         $parameters = str_replace(' ', '%20', $this->url);
-        $url        = config($this->kernel->prefixConfiguration . 'UrlHome') . $this->kernel->getCollection() . $parameters;
-        $curl       = curl_init();
+        $url        = $this->kernel->getCollection() . $parameters;
+        $client     = new Client(['base_uri' => config($this->kernel->getPrefixConfig() . '.UrlHome') , 'timeout'  => 2.0]);
 
-        $headers    = [
-            $this->protocol,
-            $this->Content_type,
-            $this->formatCurl,
-        ];
-
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $this->HTTP_TYPE);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_COOKIE, $this->getCookie());
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-
-        $Request = curl_exec($curl);
-        curl_close($curl);
-
-        dd($Request);
-        $this->checkRequestAuth($Request);
-        $classHandler = ucfirst($this->format)."Handler";
-
-        return $classHandler()->responceHandler($Request);
+        $response = $client->request($this->HTTP_TYPE, $url,
+            [
+                'headers' => [
+                    'HTTP/1.0',
+                    $this->kernel->getHandler()->getContentType(),
+                    $this->kernel->getHandler()->getAccept()
+                ],
+                'curl' => [
+                    CURLOPT_COOKIEFILE => app()->make(Authentication::class)->getPathCookieFile()
+                ]
+            ]);
+        $body = $response->getBody();
+        dd($body->getContents());
     }
 }
