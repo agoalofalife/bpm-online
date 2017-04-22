@@ -2,12 +2,15 @@
 namespace agoalofalife\bpm\Actions;
 
 use agoalofalife\bpm\Contracts\Action;
+use agoalofalife\bpm\KernelBpm;
 use Assert\Assert;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 
 class Read implements Action
 {
+    protected $kernel;
+
     /**
      * Type HTTP_TYPE select
      * @var string
@@ -15,6 +18,11 @@ class Read implements Action
     protected $HTTP_TYPE = 'GET';
 
     protected $url = '';
+
+    public function injectionKernel(KernelBpm $bpm)
+    {
+        $this->kernel = $bpm;
+    }
 
     /**
      * @return array url -> string , http_type -> string

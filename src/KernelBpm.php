@@ -21,6 +21,11 @@ class KernelBpm
         'delete' =>  '',
     ];
 
+    protected $handlers = [
+      'xml'  => '',
+      'json' => '',
+    ];
+
     protected $collection;
     protected $currentAction;
     protected $url;
@@ -69,9 +74,12 @@ class KernelBpm
 
     public function action($action, callable $callback)
     {
+        extract($this->splitAction($action));
+
         if ( Assertion::classExists($action = $this->action[$action]) )
         {
             $action =  app()->make( $action );
+            $action->injectionKernel($this);
             call_user_func($callback, $action);
             $this->currentAction = $action;
         }
@@ -101,6 +109,17 @@ class KernelBpm
         }
 
         $this->collection = $collection;
+    }
+
+    private function splitAction($action)
+    {
+        $split = explode(':', $action);
+
+        Assertion::between(count($split), 2, 2);
+        Assertion::keyExists($split[0], $this->action);
+        Assertion::keyExists($split[1], $this->handlers);
+
+        return ['action' => $split[0], 'handler' => $split[1]];
     }
 
     private function bootstrapping()
