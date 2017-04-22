@@ -50,12 +50,12 @@ class XmlHandler implements Handler
 
     public function getAccept()
     {
-        return 'application/atom+xml;type=entry;';
+        return '';
     }
 
     public function getContentType()
     {
-        return 'Content-type: application/atom+xml;type=entry;';
+        return '';
     }
 
     public function parse($response)
@@ -102,7 +102,7 @@ class XmlHandler implements Handler
     /**
      * Extraction array in response XML , more element one
      * @return array
-     * @throws \Exception
+     * @throws \ExceptionF
      */
     public function arrayMany()
     {

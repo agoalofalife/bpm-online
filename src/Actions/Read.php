@@ -151,13 +151,14 @@ class Read implements Action
         $url        = $this->kernel->getCollection() . $parameters;
         $client     = new Client(['base_uri' => config($this->kernel->getPrefixConfig() . '.UrlHome')]);
 
-        try {
+//        try {
+
             $response = $client->request($this->HTTP_TYPE, $url,
                 [
                     'headers' => [
                         'HTTP/1.0',
-                        $this->kernel->getHandler()->getContentType(),
-                        $this->kernel->getHandler()->getAccept()
+                        'Accept'       => $this->kernel->getHandler()->getContentType(),
+                        'Content-type' => $this->kernel->getHandler()->getAccept()
                     ],
                     'curl' => [
                         CURLOPT_COOKIEFILE => app()->make(Authentication::class)->getPathCookieFile()
@@ -165,15 +166,17 @@ class Read implements Action
                 ]);
 
             $body = $response->getBody();
+
+            dd($body->getContents(), 'getContents');
             $this->kernel->getHandler()->parse($body->getContents());
-        } catch (ClientException $e) {
-            dd('%^&*catch');
-            if ($e->getResponse()->getStatusCode() == 401 && $e->getResponse()->getReasonPhrase() == 'Unauthorized')
-            {
-                $this->kernel->authentication();
-                return $this->query();
-            }
-        }
+//        } catch (ClientException $e) {
+//
+//            if ($e->getResponse()->getStatusCode() == 401 && $e->getResponse()->getReasonPhrase() == 'Unauthorized')
+//            {
+//                $this->kernel->authentication();
+//                return $this->query();
+//            }
+//        }
     }
 
 }

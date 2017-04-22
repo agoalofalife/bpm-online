@@ -9,16 +9,28 @@ class JsonHandler implements Handler
 
     public function getAccept()
     {
-        return 'Accept: application/json;odata=verbose';
+        return 'application/json;odata=verbose;';
     }
 
     public function getContentType()
     {
-        return 'Content-type: application/json;odata=verbose;';
+        return 'application/json;odata=verbose;';
     }
 
     public function parse($parse)
     {
-        // TODO: Implement parse() method.
+        dd($parse);
+        dd(json_decode($parse, true));
+        dd('parse go');
+    }
+
+    /**
+     * the integrity check answer
+     * @param $response
+     * @return
+     */
+    public function checkIntegrity($response)
+    {
+        // TODO: Implement checkIntegrity() method.
     }
 }
