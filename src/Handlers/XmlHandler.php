@@ -2,6 +2,7 @@
 namespace agoalofalife\bpm\Handlers;
 
 use agoalofalife\bpm\Contracts\Handler;
+use SimpleXMLElement;
 
 class XmlHandler implements Handler
 {
@@ -78,7 +79,6 @@ class XmlHandler implements Handler
             } else {
                 return $this->arrayMany();
             }
-
     }
 
     /**
@@ -136,5 +136,65 @@ class XmlHandler implements Handler
             return true;
         }
         return false;
+    }
+
+    public function getData()
+    {
+        return $this->validText;
+    }
+
+    public function toArray()
+    {
+       return  $this->xmlToArrayRecursive($this->validText);
+    }
+
+    public function toArrayCollect()
+    {
+        return  collect($this->xmlToArrayRecursive($this->validText));
+    }
+
+    public function toJson()
+    {
+        return  json_encode($this->xmlToArrayRecursive($this->validText));
+    }
+    private function xmlToArrayRecursive($xml) {
+        $xml = (array) $xml;
+
+        if(empty($xml)) {
+            return null;
+        }
+
+        foreach ($xml as $key => $val) {
+            if (is_array($val)){
+                $xml[$key] = $this->xmlToArray($val);
+            } else {
+                if ($val instanceof SimpleXMLElement) {
+                    $xml[$key] = $this->xmlToArray($val);
+                } elseif (empty($val)) {
+                    $xml[$key] = null;
+                }
+            }
+
+        }
+
+        return $xml;
+    }
+
+    private function xmlToArray($xml) {
+        $xml = (array) $xml;
+
+        if(empty($xml)) {
+            return null;
+        }
+
+        foreach ($xml as $key=>$val) {
+            if ($val instanceof SimpleXMLElement) {
+                $xml[$key] = $this->xmlToArray($val);
+            } elseif (empty($val)) {
+                $xml[$key] = null;
+            }
+        }
+
+        return $xml;
     }
 }

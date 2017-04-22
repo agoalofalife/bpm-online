@@ -16,7 +16,8 @@
         "illuminate/container": "^5.5",
         "illuminate/support": "^5.5",
         "illuminate/config": "^5.5@dev",
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~6.0",
+        "symfony/var-dumper": "^3.2"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.6",

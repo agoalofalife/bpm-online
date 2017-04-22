@@ -32,7 +32,8 @@ class Read implements Action
      */
     public function getData()
     {
-       return $this->query();
+        $this->query();
+        return $this->kernel->getHandler();
     }
 
     /**
@@ -162,9 +163,11 @@ class Read implements Action
                         CURLOPT_COOKIEFILE => app()->make(Authentication::class)->getPathCookieFile()
                     ]
                 ]);
+
             $body = $response->getBody();
-            return $this->kernel->getHandler()->parse($body->getContents());
+            $this->kernel->getHandler()->parse($body->getContents());
         } catch (ClientException $e) {
+            dd('%^&*catch');
             if ($e->getResponse()->getStatusCode() == 401 && $e->getResponse()->getReasonPhrase() == 'Unauthorized')
             {
                 $this->kernel->authentication();
@@ -172,4 +175,5 @@ class Read implements Action
             }
         }
     }
+
 }
