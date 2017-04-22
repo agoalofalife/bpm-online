@@ -1,9 +1,12 @@
 <?php
 namespace agoalofalife\bpm;
 
+use agoalofalife\bpm\Actions\Create;
 use agoalofalife\bpm\Actions\Read;
+use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\Contracts\SourceConfiguration;
 use agoalofalife\bpm\ServiceProviders\ActionsServiceProviders;
+use agoalofalife\bpm\ServiceProviders\AuthenticationServiceProvider;
 use agoalofalife\bpm\ServiceProviders\ConfigurationServiceProvider;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
@@ -12,7 +15,7 @@ use Assert\AssertionFailedException;
 class KernelBpm
 {
     protected $action = [
-        'create' =>  '',
+        'create' =>  Create::class,
         'read'   =>  Read::class,
         'update' =>  '',
         'delete' =>  '',
@@ -32,12 +35,20 @@ class KernelBpm
      */
     protected $serviceProviders = [
         ConfigurationServiceProvider::class,
-        ActionsServiceProviders::class
+        ActionsServiceProviders::class,
+        AuthenticationServiceProvider::class
     ];
 
     public function __construct()
     {
         $this->bootstrapping();
+    }
+
+    public function authentication()
+    {
+        $auth = app()->make(Authentication::class);
+        $auth->setConfig(config($this->prefixConfiguration));
+        $auth->auth();
     }
 
     public function loadConfiguration(SourceConfiguration $configuration)
