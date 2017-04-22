@@ -138,4 +138,32 @@ class Read implements Action
         $this->concatenationUrlCurl($ParameterQuery);
         return $this;
     }
+
+    protected function curl()
+    {
+        $parameters = str_replace(' ', '%20', $this->url);
+        $url        = config($this->kernel->prefixConfiguration . 'UrlHome') . $this->kernel->getCollection() . $parameters;
+        $curl       = curl_init();
+
+        $headers    = [
+            $this->protocol,
+            $this->Content_type,
+            $this->formatCurl,
+        ];
+
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $this->HTTP_TYPE);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_COOKIE, $this->getCookie());
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+        $Request = curl_exec($curl);
+        curl_close($curl);
+
+        dd($Request);
+        $this->checkRequestAuth($Request);
+        $classHandler = ucfirst($this->format)."Handler";
+
+        return $classHandler()->responceHandler($Request);
+    }
 }

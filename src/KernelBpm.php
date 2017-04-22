@@ -56,6 +56,14 @@ class KernelBpm
         $auth->auth();
     }
 
+    /**
+     * @return string
+     */
+    public function getCollection()
+    {
+        return $this->collection;
+    }
+
     public function loadConfiguration(SourceConfiguration $configuration)
     {
         config()->set(  $this->prefixConfiguration = $configuration->getName(), $configuration->get());
@@ -115,9 +123,10 @@ class KernelBpm
     {
         $split = explode(':', $action);
 
+        // verification values
         Assertion::between(count($split), 2, 2);
-        Assertion::keyExists($split[0], $this->action);
-        Assertion::keyExists($split[1], $this->handlers);
+        Assertion::keyExists( $this->action, $split[0]);
+        Assertion::keyExists( $this->handlers, $split[1]);
 
         return ['action' => $split[0], 'handler' => $split[1]];
     }
