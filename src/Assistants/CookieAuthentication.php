@@ -22,10 +22,6 @@ class CookieAuthentication implements Authentication
         return $this->pathToCookieFile;
     }
 
-    public function refresh()
-    {
-        $this->auth();
-    }
     public function auth()
     {
         $curl    = curl_init();

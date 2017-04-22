@@ -8,6 +8,7 @@ use Assert\Assert;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class Read implements Action
 {
@@ -19,7 +20,7 @@ class Read implements Action
      */
     protected $HTTP_TYPE = 'GET';
 
-    protected $url = '';
+    protected $url = '?';
 
     public function injectionKernel(KernelBpm $bpm)
     {
@@ -58,8 +59,9 @@ class Read implements Action
     public function guid($guid)
     {
         try{
-            Assertion::regex($guid, '/[0-9]{8}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{12}/');
+            Assertion::regex($guid, '/[A-z0-9]{8}-[A-z0-9]{4}-[A-z0-9]{4}-[A-z0-9]{4}-[A-z0-9]{12}/');
             $ParameterQuery = '(guid'.'\'' . $guid . '\''.')';
+            $this->url = '';
             $this->concatenationUrlCurl($ParameterQuery);
 
             return $this;
@@ -146,20 +148,28 @@ class Read implements Action
     {
         $parameters = str_replace(' ', '%20', $this->url);
         $url        = $this->kernel->getCollection() . $parameters;
-        $client     = new Client(['base_uri' => config($this->kernel->getPrefixConfig() . '.UrlHome') , 'timeout'  => 2.0]);
+        $client     = new Client(['base_uri' => config($this->kernel->getPrefixConfig() . '.UrlHome')]);
 
-        $response = $client->request($this->HTTP_TYPE, $url,
-            [
-                'headers' => [
-                    'HTTP/1.0',
-                    $this->kernel->getHandler()->getContentType(),
-                    $this->kernel->getHandler()->getAccept()
-                ],
-                'curl' => [
-                    CURLOPT_COOKIEFILE => app()->make(Authentication::class)->getPathCookieFile()
-                ]
-            ]);
-        $body = $response->getBody();
-        dd($body->getContents());
+        try {
+            $response = $client->request($this->HTTP_TYPE, $url,
+                [
+                    'headers' => [
+                        'HTTP/1.0',
+                        $this->kernel->getHandler()->getContentType(),
+                        $this->kernel->getHandler()->getAccept()
+                    ],
+                    'curl' => [
+                        CURLOPT_COOKIEFILE => app()->make(Authentication::class)->getPathCookieFile()
+                    ]
+                ]);
+            $body = $response->getBody();
+            return $this->kernel->getHandler()->parse($body->getContents());
+        } catch (ClientException $e) {
+            if ($e->getResponse()->getStatusCode() == 401 && $e->getResponse()->getReasonPhrase() == 'Unauthorized')
+            {
+                $this->kernel->authentication();
+                return $this->query();
+            }
+        }
     }
 }

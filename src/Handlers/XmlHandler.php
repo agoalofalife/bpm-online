@@ -5,6 +5,10 @@ use agoalofalife\bpm\Contracts\Handler;
 
 class XmlHandler implements Handler
 {
+    private $response;
+
+    private $validText = [];
+
     /*
     |--------------------------------------------------------------------------
     | Namespaces XML API BPM
@@ -13,9 +17,9 @@ class XmlHandler implements Handler
     |
     */
     private $namespaces = [
-        'NamespaceAtom'         =>'http://www.w3.org/2005/Atom',
-        'NamespaceMetadata'     =>'http://schemas.microsoft.com/ado/2007/08/dataservices/metadata',
-        'NamespaceDataservices' =>'http://schemas.microsoft.com/ado/2007/08/dataservices',
+        'NamespaceAtom'         => 'http://www.w3.org/2005/Atom',
+        'NamespaceMetadata'     => 'http://schemas.microsoft.com/ado/2007/08/dataservices/metadata',
+        'NamespaceDataServices' => 'http://schemas.microsoft.com/ado/2007/08/dataservices',
     ];
 
     /*
@@ -56,18 +60,16 @@ class XmlHandler implements Handler
     public function parse($response)
     {
 
-        $this->responceXML       = simplexml_load_string($response);
-//        $copyresponceXML         = simplexml_load_string($responseXml);
-        self::$Atom              = config('apiBpm.NamespaceAtom');
-        self::$Metadata          = config('apiBpm.NamespaceMetadata');
-        self::$Dataservices      = config('apiBpm.NamespaceDataservices');
+        $this->response      = simplexml_load_string($response);
+        $copyXml             = $this->response;
 
-        if (!empty($this->responceXML->message)) {
-            $this->handlerError();
+        if ( $this->checkIntegrity($this->response) === false )
+        {
+            return [];
         }
 
-        if ($responseXml) {
-            $array_vars_list    = get_object_vars($copyresponceXML);
+            $array_vars_list    = get_object_vars($copyXml);
+
             if (key_exists('content', $array_vars_list)) {
                 return $this->arrayOne();
             }
@@ -76,6 +78,63 @@ class XmlHandler implements Handler
             } else {
                 return $this->arrayMany();
             }
+
+    }
+
+    /**
+     * Return All Collection Bpm
+     * if not specified all parameters in url
+     * return list all collection from bpm
+     * @throws \Exception
+     */
+    public function workspace()
+    {
+        if ( !empty($this->response->message->collection->title) ) {
+            throw new \Exception("responce BPM API : ".
+                $this->response->innererror->message.". ENG :".  $this->response->message);
         }
+        foreach ($this->response->workspace->collection as $item) {
+            $this->validText[] = get_object_vars($item->children(  $this->namespaces['NamespaceAtom'] ))['title'];
+        }
+       return $this;
+    }
+
+    /**
+     * Extraction array in response XML , more element one
+     * @return array
+     * @throws \Exception
+     */
+    public function arrayMany()
+    {
+        try {
+            foreach ($this->response->children( $this->namespaces['NamespaceAtom'] )->entry as $item ) {
+                $this->validText[] =   $item->content->children( $this->namespaces['NamespaceMetadata'] )
+                    ->children($this->namespaces['NamespaceDataServices']);
+            }
+
+            return $this;
+        } catch (\Exception $e) {
+            dd($this->responceXML);
+        }
+    }
+    /**
+     *  Get one Element
+     * @return mixed
+     */
+    public function arrayOne()
+    {
+          $this->validText = $this->response->children( $this->namespaces['NamespaceAtom'] )->content
+                                    ->children( $this->namespaces['NamespaceMetadata'] )
+                                    ->children( $this->namespaces['NamespaceDataServices'] );
+        return $this;
+    }
+
+    public function checkIntegrity($response)
+    {
+        if ( empty($response->message) )
+        {
+            return true;
+        }
+        return false;
     }
 }
