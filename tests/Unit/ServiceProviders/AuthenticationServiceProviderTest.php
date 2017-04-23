@@ -21,6 +21,7 @@ class AuthenticationServiceProviderTest extends TestCase
     {
         $this->assertInstanceOf(ServiceProvider::class, $this->providers);
     }
+
     public function test_register()
     {
         $this->providers->register();
