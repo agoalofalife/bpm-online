@@ -1,19 +1,20 @@
 <?php
+
 namespace agoalofalife\Tests\ServiceProviders;
 
-use agoalofalife\bpm\Actions\Read;
+use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\Contracts\ServiceProvider;
-use agoalofalife\bpm\ServiceProviders\ActionsServiceProviders;
+use agoalofalife\bpm\ServiceProviders\AuthenticationServiceProvider;
 use agoalofalife\Tests\TestCase;
 
-class ActionsServiceProvidersTest extends TestCase
+class AuthenticationServiceProviderTest extends TestCase
 {
     protected $providers;
 
     public function setUp()
     {
         parent::setUp();
-        $this->providers = new ActionsServiceProviders();
+        $this->providers = new AuthenticationServiceProvider();
     }
 
     public function test_instanceOf()
@@ -23,7 +24,6 @@ class ActionsServiceProvidersTest extends TestCase
     public function test_register()
     {
         $this->providers->register();
-        $this->assertTrue(app()->bound(Read::class));
+        $this->assertTrue(app()->bound(Authentication::class));
     }
-
 }
