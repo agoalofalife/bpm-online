@@ -43,6 +43,7 @@ class CookieAuthenticationTest extends TestCase
             'Password' => '',
             'UrlLogin' => 'https://ikratkoe.bpmonline.com/ServiceModel/AuthService.svc/Login'
         ]);
+
         $this->assertEquals(true, $this->authClass->auth());
     }
 }

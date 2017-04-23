@@ -34,7 +34,7 @@ class CookieAuthentication implements Authentication
                 "Content-type: application/json"
             );
 
-//            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+//            curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);
             curl_setopt($curl, CURLOPT_HEADER, 1);
             curl_setopt($curl, CURLOPT_URL,  $this->configuration['UrlLogin']);
             curl_setopt($curl, CURLOPT_POST, true);
@@ -50,7 +50,7 @@ class CookieAuthentication implements Authentication
 
             $response = curl_exec($curl);
             curl_close($curl);
-
+            ob_clean();
             return $response;
     }
 }
