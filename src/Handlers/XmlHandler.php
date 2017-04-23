@@ -61,7 +61,6 @@ class XmlHandler implements Handler, Collection
 
     public function parse($response)
     {
-
         $this->response      = simplexml_load_string($response);
         $copyXml             = $this->response;
 
@@ -80,54 +79,6 @@ class XmlHandler implements Handler, Collection
             } else {
                 return $this->arrayMany();
             }
-    }
-
-    /**
-     * Return All Collection Bpm
-     * if not specified all parameters in url
-     * return list all collection from bpm
-     * @throws \Exception
-     */
-    public function workspace()
-    {
-        if ( !empty($this->response->message->collection->title) ) {
-            throw new \Exception("responce BPM API : ".
-                $this->response->innererror->message.". ENG :".  $this->response->message);
-        }
-        foreach ($this->response->workspace->collection as $item) {
-            $this->validText[] = get_object_vars($item->children(  $this->namespaces['NamespaceAtom'] ))['title'];
-        }
-       return $this;
-    }
-
-    /**
-     * Extraction array in response XML , more element one
-     * @return array
-     * @throws \ExceptionF
-     */
-    public function arrayMany()
-    {
-        try {
-            foreach ($this->response->children( $this->namespaces['NamespaceAtom'] )->entry as $item ) {
-                $this->validText[] =   $item->content->children( $this->namespaces['NamespaceMetadata'] )
-                    ->children($this->namespaces['NamespaceDataServices']);
-            }
-
-            return $this;
-        } catch (\Exception $e) {
-            dd($this->responceXML);
-        }
-    }
-    /**
-     *  Get one Element
-     * @return mixed
-     */
-    public function arrayOne()
-    {
-          $this->validText = $this->response->children( $this->namespaces['NamespaceAtom'] )->content
-                                    ->children( $this->namespaces['NamespaceMetadata'] )
-                                    ->children( $this->namespaces['NamespaceDataServices'] );
-        return $this;
     }
 
     public function checkIntegrity($response)
@@ -159,4 +110,51 @@ class XmlHandler implements Handler, Collection
         return  json_encode($this->xmlToArrayRecursive($this->validText));
     }
 
+    /**
+     * Return All Collection Bpm
+     * if not specified all parameters in url
+     * return list all collection from bpm
+     * @throws \Exception
+     */
+    private function workspace()
+    {
+        if ( !empty($this->response->message->collection->title) ) {
+            throw new \Exception("responce BPM API : ".
+                $this->response->innererror->message.". ENG :".  $this->response->message);
+        }
+        foreach ($this->response->workspace->collection as $item) {
+            $this->validText[] = get_object_vars($item->children(  $this->namespaces['NamespaceAtom'] ))['title'];
+        }
+        return $this;
+    }
+
+    /**
+     * Extraction array in response XML , more element one
+     * @return array
+     * @throws \ExceptionF
+     */
+    private function arrayMany()
+    {
+        try {
+            foreach ($this->response->children( $this->namespaces['NamespaceAtom'] )->entry as $item ) {
+                $this->validText[] =   $item->content->children( $this->namespaces['NamespaceMetadata'] )
+                    ->children($this->namespaces['NamespaceDataServices']);
+            }
+
+            return $this;
+        } catch (\Exception $e) {
+            dd($this->responceXML);
+        }
+    }
+    /**
+     *  Get one Element
+     * @return mixed
+     */
+    private function arrayOne()
+    {
+        $this->validText = $this->response->children( $this->namespaces['NamespaceAtom'] )->content
+            ->children( $this->namespaces['NamespaceMetadata'] )
+            ->children( $this->namespaces['NamespaceDataServices'] );
+        return $this;
+    }
 }
