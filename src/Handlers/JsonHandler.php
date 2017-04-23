@@ -9,10 +9,10 @@ class JsonHandler implements Handler, Collection
 {
     use XmlConverter;
 
+    protected $response;
+
     private $jsonPrefix     = 'd';
     private $jsonPrefixWord = 'results';
-
-    protected $response;
     private $validText = [];
 
     public function getAccept()
@@ -46,11 +46,17 @@ class JsonHandler implements Handler, Collection
        return isset( json_decode($response)->{$this->jsonPrefix} );
     }
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
         return $this->objectToArray($this->validText);
     }
 
+    /**
+     * @return string json
+     */
     public function toJson()
     {
         return json_encode($this->validText);
