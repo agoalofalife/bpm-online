@@ -3,8 +3,9 @@ namespace agoalofalife\bpm\ServiceProviders;
 
 
 use agoalofalife\bpm\Contracts\ServiceProvider;
+use agoalofalife\bpm\Handlers\JsonHandler;
 use agoalofalife\bpm\Handlers\XmlHandler;
-use agoalofalife\bpmOnline\Api\JsonHandler;
+
 
 class HandlerServiceProvider implements ServiceProvider
 {
