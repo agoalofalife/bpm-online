@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xml:base="https://test.bpmonline.com/0/ServiceModel/EntityDataService.svc/" xmlns="http://www.w3.org/2005/Atom" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+<id>https://test.bpmonline.com/0/ServiceModel/EntityDataService.svc/TestCollection</id>
+<title type="text">TestCollection</title>
+<updated>test</updated>
+<link rel="self" title="TestCollection" href="TestCollection" /><entry>
+<id>https://test.bpmonline.com/0/ServiceModel/EntityDataService.svc/TestCollection(guid'00000000-0000-0000-0000-000000000000')</id>
+<category term="test" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+<link rel="edit" title="Case" href="TestCollection(guid'00000000-0000-0000-0000-000000000000')" />
+<link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/CreatedBy" type="application/atom+xml;type=entry" title="CreatedBy" href="TestCollection(guid'00000000-0000-0000-0000-000000000000')/CreatedBy" />
+<title /><updated>test</updated>
+<author><name /></author><content type="application/xml">
+<m:properties>
+<d:Id m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:Id>
+<d:Number>SR0000000</d:Number>
+</m:properties>
+</content>
+</entry></feed>
