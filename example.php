@@ -25,11 +25,14 @@ $test->setConfigManually('apiBpm', [
 ]);
 
 // 3, Setting collection
-$test->setCollection('SomeCollection');
+$test->setCollection('CaseCollection');
 
+// 4. get Cookie or just auth
+//$test->authentication();
 
-$test = $test->action('read', function ($select){
-     $select->skip(40)->amount(2)->orderby('Number','desc');
+$test = $test->action('read:json', function ($read){
+    $read->amount(1)->skip(100);
+
 })->get();
 
-dd($test);
+dd($test->toArray(), '?');

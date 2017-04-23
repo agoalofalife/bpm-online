@@ -10,6 +10,7 @@ use Assert\AssertionFailedException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
+
 class Read implements Action
 {
     protected $kernel;
@@ -27,6 +28,11 @@ class Read implements Action
         $this->kernel = $bpm;
     }
 
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
     /**
      * @return array url -> string , http_type -> string
      */
@@ -36,26 +42,11 @@ class Read implements Action
         return $this->kernel->getHandler();
     }
 
-    /**
-     *  Concatenation Url In Curl
-     * @param $newParameters
-     * @return $this
-     */
-    protected function concatenationUrlCurl($newParameters)
-    {
-        if ($this->url  == '?') {
-            $this->url .= $newParameters;
-        } elseif ($this->url == '') {
-            $this->url .= $newParameters;
-        } else {
-            $this->url .= '&'.$newParameters;
-        }
-        return $this;
-    }
 
     /**
-     * @param string  mask 00000000-0000-0000-0000-000000000000
+     * @param $guid string
      * @return $this
+     * @throws \Exception
      */
     public function guid($guid)
     {
@@ -67,7 +58,7 @@ class Read implements Action
 
             return $this;
         } catch(AssertionFailedException $e) {
-            echo "Your guid {$e->getValue()} does not match the mask : 00000000-0000-0000-0000-000000000000";
+            throw new \Exception("Your guid {$e->getValue()} does not match the mask : 00000000-0000-0000-0000-000000000000");
         }
 
     }
@@ -177,4 +168,20 @@ class Read implements Action
         }
     }
 
+    /**
+     *  Concatenation Url In Curl
+     * @param $newParameters
+     * @return $this
+     */
+    protected function concatenationUrlCurl($newParameters)
+    {
+        if ($this->url  == '?') {
+            $this->url .= $newParameters;
+        } elseif ($this->url == '') {
+            $this->url .= $newParameters;
+        } else {
+            $this->url .= '&'.$newParameters;
+        }
+        return $this;
+    }
 }
