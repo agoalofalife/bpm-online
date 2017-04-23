@@ -151,8 +151,7 @@ class Read implements Action
         $url        = $this->kernel->getCollection() . $parameters;
         $client     = new Client(['base_uri' => config($this->kernel->getPrefixConfig() . '.UrlHome')]);
 
-//        try {
-
+        try {
             $response = $client->request($this->HTTP_TYPE, $url,
                 [
                     'headers' => [
@@ -167,16 +166,15 @@ class Read implements Action
 
             $body = $response->getBody();
 
-            dd($body->getContents(), 'getContents');
             $this->kernel->getHandler()->parse($body->getContents());
-//        } catch (ClientException $e) {
-//
-//            if ($e->getResponse()->getStatusCode() == 401 && $e->getResponse()->getReasonPhrase() == 'Unauthorized')
-//            {
-//                $this->kernel->authentication();
-//                return $this->query();
-//            }
-//        }
+        } catch (ClientException $e) {
+
+            if ($e->getResponse()->getStatusCode() == 401 && $e->getResponse()->getReasonPhrase() == 'Unauthorized')
+            {
+                $this->kernel->authentication();
+                return $this->query();
+            }
+        }
     }
 
 }

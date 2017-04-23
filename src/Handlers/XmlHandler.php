@@ -1,11 +1,12 @@
 <?php
 namespace agoalofalife\bpm\Handlers;
 
+use agoalofalife\bpm\Contracts\Collection;
 use agoalofalife\bpm\Contracts\Handler;
-use SimpleXMLElement;
 
-class XmlHandler implements Handler
+class XmlHandler implements Handler, Collection
 {
+    use XmlConverter;
     private $response;
 
     private $validText = [];
@@ -157,44 +158,5 @@ class XmlHandler implements Handler
     {
         return  json_encode($this->xmlToArrayRecursive($this->validText));
     }
-    private function xmlToArrayRecursive($xml) {
-        $xml = (array) $xml;
 
-        if(empty($xml)) {
-            return null;
-        }
-
-        foreach ($xml as $key => $val) {
-            if (is_array($val)){
-                $xml[$key] = $this->xmlToArray($val);
-            } else {
-                if ($val instanceof SimpleXMLElement) {
-                    $xml[$key] = $this->xmlToArray($val);
-                } elseif (empty($val)) {
-                    $xml[$key] = null;
-                }
-            }
-
-        }
-
-        return $xml;
-    }
-
-    private function xmlToArray($xml) {
-        $xml = (array) $xml;
-
-        if(empty($xml)) {
-            return null;
-        }
-
-        foreach ($xml as $key=>$val) {
-            if ($val instanceof SimpleXMLElement) {
-                $xml[$key] = $this->xmlToArray($val);
-            } elseif (empty($val)) {
-                $xml[$key] = null;
-            }
-        }
-
-        return $xml;
-    }
 }

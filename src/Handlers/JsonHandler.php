@@ -2,10 +2,18 @@
 namespace agoalofalife\bpm\Handlers;
 
 
+use agoalofalife\bpm\Contracts\Collection;
 use agoalofalife\bpm\Contracts\Handler;
 
-class JsonHandler implements Handler
+class JsonHandler implements Handler, Collection
 {
+    use XmlConverter;
+
+    private $jsonPrefix     = 'd';
+    private $jsonPrefixWord = 'results';
+
+    protected $response;
+    private $validText = [];
 
     public function getAccept()
     {
@@ -19,18 +27,58 @@ class JsonHandler implements Handler
 
     public function parse($parse)
     {
-        dd($parse);
-        dd(json_decode($parse, true));
-        dd('parse go');
+        if ($this->checkIntegrity($parse) === false)
+        {
+            return [];
+        }
+
+        $this->response = $parse;
+        $this->validText = json_decode($parse)->{$this->jsonPrefix}->{$this->jsonPrefixWord};
+        return $this;
     }
 
     /**
-     * the integrity check answer
      * @param $response
-     * @return
+     * @return bool
      */
     public function checkIntegrity($response)
     {
-        // TODO: Implement checkIntegrity() method.
+       return isset( json_decode($response)->{$this->jsonPrefix} );
+    }
+
+    public function toArray()
+    {
+        return $this->objectToArray($this->validText);
+    }
+
+    public function toJson()
+    {
+        return json_encode($this->validText);
+    }
+
+    public function getData()
+    {
+        return $this->validText;
+    }
+
+    private function objectToArray($data)
+    {
+        $result = array();
+
+        foreach ($data as $key => $value) {
+            if (gettype($value) == 'object')
+            {
+                $result[$key] = $this->objectToArray($value);
+            } else{
+               if (gettype($value) != 'object')
+               {
+                   $result[$key] = $value;
+               } else{
+                   $result[$key] = get_object_vars($value);
+               }
+
+            }
+        }
+        return $result;
     }
 }
