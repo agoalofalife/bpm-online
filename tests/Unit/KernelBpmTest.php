@@ -105,7 +105,7 @@ class KernelBpmTest extends TestCase
         $mockAction = $this->mock($this->kernel->getListActions()[$action]);
 
         app()->instance($this->kernel->getListActions()[$action], $mockAction);
-        $mockAction->shouldReceive('getData')->once();
+        $mockAction->shouldReceive('processData')->once();
         $this->kernel->setAction($action);
         $this->kernel->get();
 

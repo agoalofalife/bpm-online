@@ -4,12 +4,20 @@ namespace agoalofalife\bpm\Handlers;
 use agoalofalife\bpm\Contracts\Collection;
 use agoalofalife\bpm\Contracts\Handler;
 
+/**
+ * Class XmlHandler
+ * @property string buildXml
+ * @package agoalofalife\bpm\Handlers
+ */
 class XmlHandler implements Handler, Collection
 {
     use XmlConverter;
+
     private $response;
 
     private $validText = [];
+
+    private $buildXml;
 
     /*
     |--------------------------------------------------------------------------
@@ -156,5 +164,50 @@ class XmlHandler implements Handler, Collection
             ->children( $this->namespaces['NamespaceMetadata'] )
             ->children( $this->namespaces['NamespaceDataServices'] );
         return $this;
+    }
+
+
+    /**
+     * Xml text for request in Bpm Online
+     * @param $data
+     * @return string
+     */
+    public function create($data)
+    {
+
+        //----------  Base  ----------//
+        $dom          = new \DOMDocument('1.0', 'utf-8');
+        $entry        = $dom->createElement('entry');
+        $dom->appendChild($entry);
+
+        //----------  NameSpaces  ----------//
+        foreach ($this->listNamespaces as $key => $value) {
+
+            $xmlBase  = $dom->createAttribute(key($value));
+            $entry->appendChild($xmlBase);
+
+            $value    = $dom->createTextNode($value[key($value)]);
+            $xmlBase->appendChild($value);
+        }
+
+        //----------  <content type="application/xml">  ----------//
+        $content      = $dom->createElement('content');
+        $entry->appendChild($content);
+        $xmlns_dcd    = $dom->createAttribute('type');
+        $content->appendChild($xmlns_dcd);
+        $valued       = $dom->createTextNode('application/xml');
+        $xmlns_dcd->appendChild($valued);
+
+        //----------  properties  ----------//
+        $properties   = $dom->createElement('m:properties');
+        $content->appendChild($properties);
+
+        foreach ($data as $nameField => $valueField) {
+            $element  = $dom->createElement($this->prefixNamespace.':'.$nameField);
+            $properties->appendChild($element);
+            $valued   = $dom->createTextNode($valueField);
+            $element->appendChild($valued);
+        }
+        return $this->buildXml = $dom->saveXML();
     }
 }

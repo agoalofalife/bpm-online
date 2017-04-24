@@ -91,4 +91,19 @@ XML;
         $this->xml->parse(file_get_contents(__DIR__.'/../../fakeFile/test.xml'));
         $this->assertEquals('[{"Id":"00000000-0000-0000-0000-000000000000","Number":"SR0000000"}]', $this->xml->toJson());
     }
+
+    public function test_create()
+    {
+        $xml = $this->xml->create([
+                'test' => 'test'
+            ]);
+
+        $equal = <<<XML
+<?xml version="1.0" encoding="utf-8"?>
+<entry xml:base="http://softex-iis:7503/0/ServiceModel/EntityDataService.svc/" xmlns="http://www.w3.org/2005/Atom" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:georss="http://www.georss.org/georss" xmlns:gml="http://www.opengis.net/gml"><content type="application/xml"><m:properties><d:test>test</d:test></m:properties></content></entry>
+
+XML;
+
+        $this->assertEquals($xml, $equal);
+    }
 }

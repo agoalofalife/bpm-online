@@ -166,7 +166,7 @@ class KernelBpm
     public function get()
     {
         // here query in BPM
-        return $this->currentAction->getData();
+        return $this->currentAction->processData();
     }
 
     /**

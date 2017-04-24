@@ -2,6 +2,7 @@
 namespace agoalofalife\bpm\Actions;
 
 use agoalofalife\bpm\Contracts\Action;
+use agoalofalife\bpm\Contracts\ActionGet;
 use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\KernelBpm;
 use Assert\Assert;
@@ -11,7 +12,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 
 
-class Read implements Action
+class Read implements Action, ActionGet
 {
     protected $kernel;
 
@@ -36,12 +37,16 @@ class Read implements Action
     /**
      * @return array url -> string , http_type -> string
      */
-    public function getData()
+    public function processData()
     {
-        $this->query();
+        $this->getData();
         return $this->kernel->getHandler();
     }
 
+    public function getData()
+    {
+        $this->query();
+    }
 
     /**
      * @param $guid string
@@ -146,6 +151,7 @@ class Read implements Action
         $url        = $this->kernel->getCollection() . $parameters;
         $client     = app()->make(ClientInterface::class);
         $urlHome    = config($this->kernel->getPrefixConfig() . '.UrlHome');
+
         try {
             $response = $client->request($this->HTTP_TYPE, $urlHome . $url,
                 [
@@ -188,4 +194,6 @@ class Read implements Action
         }
         return $this;
     }
+
+
 }
