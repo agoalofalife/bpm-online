@@ -1,6 +1,7 @@
 <?php
 namespace agoalofalife\bpm\Actions;
 
+use agoalofalife\bpm\Assistants\ConstructorUrl;
 use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\Contracts\ActionGet;
 use agoalofalife\bpm\Contracts\Authentication;
@@ -14,6 +15,8 @@ use GuzzleHttp\Exception\ClientException;
 
 class Read implements Action, ActionGet
 {
+    use ConstructorUrl;
+
     protected $kernel;
 
     /**
@@ -177,23 +180,4 @@ class Read implements Action, ActionGet
             }
         }
     }
-
-    /**
-     *  Concatenation Url In Curl
-     * @param $newParameters
-     * @return $this
-     */
-    protected function concatenationUrlCurl($newParameters)
-    {
-        if ($this->url  == '?') {
-            $this->url .= $newParameters;
-        } elseif ($this->url == '') {
-            $this->url .= $newParameters;
-        } else {
-            $this->url .= '&'.$newParameters;
-        }
-        return $this;
-    }
-
-
 }

@@ -84,6 +84,5 @@ class Create implements Action, ActionSet
                 return $this->query();
             }
         }
-
     }
 }

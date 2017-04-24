@@ -30,9 +30,26 @@ $test->setCollection('CaseCollection');
 // 4. get Cookie or just auth
 //$test->authentication();
 
-$test = $test->action('read:json', function ($read){
-    $read->amount(1)->skip(100);
+// 5. Example Reading from API
+//$test = $test->action('read:json', function ($read){
+//    $read->amount(1)->skip(100);
+//
+//})->get();
+//
+//dd($test->toArray(), '?');
 
+// 6.Example Creating from API
+//$test = $test->action('create:xml', function ($creator){
+//    $creator->setData([
+//        // array key => value
+//    ]);
+//})->get();
+//dd($test, 'done');
+
+// 7 Example Update from API
+$test = $test->action('update:xml', function ($creator){
+    $creator->guid('')->setData([
+       'Number' => 'test'
+    ]);
 })->get();
-
-dd($test->toArray(), '?');
+dd($test);
