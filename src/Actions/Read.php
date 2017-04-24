@@ -2,6 +2,7 @@
 namespace agoalofalife\bpm\Actions;
 
 use agoalofalife\bpm\Assistants\ConstructorUrl;
+use agoalofalife\bpm\Assistants\VerifyValues;
 use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\Contracts\ActionGet;
 use agoalofalife\bpm\Contracts\Authentication;
@@ -15,7 +16,7 @@ use GuzzleHttp\Exception\ClientException;
 
 class Read implements Action, ActionGet
 {
-    use ConstructorUrl;
+    use ConstructorUrl, VerifyValues;
 
     protected $kernel;
 
@@ -59,7 +60,7 @@ class Read implements Action, ActionGet
     public function guid($guid)
     {
         try{
-            Assertion::regex($guid, '/[A-z0-9]{8}-[A-z0-9]{4}-[A-z0-9]{4}-[A-z0-9]{4}-[A-z0-9]{12}/');
+           $this->checkGuId($guid);
             $ParameterQuery = '(guid'.'\'' . $guid . '\''.')';
             $this->url = '';
             $this->concatenationUrlCurl($ParameterQuery);

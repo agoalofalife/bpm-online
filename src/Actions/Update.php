@@ -1,9 +1,8 @@
 <?php
 namespace agoalofalife\bpm\Actions;
 
-
-
 use agoalofalife\bpm\Assistants\ConstructorUrl;
+use agoalofalife\bpm\Assistants\VerifyValues;
 use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\Contracts\ActionGet;
 use agoalofalife\bpm\Contracts\ActionSet;
@@ -22,7 +21,7 @@ use GuzzleHttp\Exception\ClientException;
  */
 class Update implements Action, ActionGet, ActionSet
 {
-    use ConstructorUrl;
+    use ConstructorUrl, VerifyValues;
 
     protected $url = '?';
 
@@ -52,30 +51,38 @@ class Update implements Action, ActionGet, ActionSet
     }
 
     /**
+     * @param array $data
+     * @return array
+     */
+    public function setData(array $data)
+    {
+        return $this->data = $data;
+    }
+
+    /**
      * @return \agoalofalife\bpm\Contracts\Handler
      */
     public function processData()
     {
-        $this->getData();
+        $this->query();
         return $this->kernel->getHandler();
     }
 
     /**
-     * @param array $data
-     * @return void
+     * @return array
      */
-    public function setData(array $data)
+    public function getData()
     {
-        $this->data = $data;
+        return $this->data;
     }
 
     /**
-     *  Guid
      * @param $guid string
      * @return $this
      */
     public function guid($guid)
     {
+        $this->checkGuId($guid);
         $this->url      = '';
         $ParameterQuery = '(guid';
         $ParameterQuery.= "'";
@@ -87,13 +94,8 @@ class Update implements Action, ActionGet, ActionSet
     }
 
     /**
-     * @return array url -> string , http_type -> string
+     * @return mixed
      */
-    public function getData()
-    {
-        $this->query();
-    }
-
     private function query()
     {
         $parameters = str_replace(' ', '%20', $this->url);
