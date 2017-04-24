@@ -66,14 +66,6 @@ class KernelBpm
     }
 
     /**
-     * @return string
-     */
-    public function getCollection()
-    {
-        return $this->collection;
-    }
-
-    /**
      * @return array
      */
     public function getListActions()
@@ -179,17 +171,27 @@ class KernelBpm
 
     /**
      * Set collection for correct query
-     * @param $collection
+     * @param string $collection
+     * @return mixed
+     * @throws \Exception
      */
     public function setCollection($collection)
     {
         try {
             Assertion::regex($collection, '/[A-z]+Collection$/');
         } catch(AssertionFailedException $e) {
-            echo "Expected word 'Collection' in parameter method setCollection received : " .  $e->getValue();
+           throw new \Exception("Expected word 'Collection' in parameter method setCollection received : " .  $e->getValue());
         }
 
-        $this->collection = $collection;
+        return $this->collection = $collection;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCollection()
+    {
+        return $this->collection;
     }
 
     private function splitAction($action)

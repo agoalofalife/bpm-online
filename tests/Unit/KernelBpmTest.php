@@ -1,13 +1,11 @@
 <?php
 namespace agoalofalife\Tests;
 
-use agoalofalife\bpm\Actions\Read;
 use agoalofalife\bpm\Assistants\CookieAuthentication;
 use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\Contracts\Handler;
 use agoalofalife\bpm\KernelBpm;
-use Akamon\MockeryCallableMock\MockeryCallableMock;
 use Assert\InvalidArgumentException;
 
 class KernelBpmTest extends TestCase
@@ -41,11 +39,6 @@ class KernelBpmTest extends TestCase
     public function test_getListActions()
     {
         $this->assertInternalType("array", $this->kernel->getListActions());
-    }
-    public function test_getCollection()
-    {
-        $this->kernel->setCollection('TestCollection');
-        $this->assertEquals('TestCollection', $this->kernel->getCollection());
     }
 
     public function test_getPrefixConfig()
@@ -111,10 +104,32 @@ class KernelBpmTest extends TestCase
         $action     = $this->allActions->random();
         $mockAction = $this->mock($this->kernel->getListActions()[$action]);
 
+        app()->instance($this->kernel->getListActions()[$action], $mockAction);
         $mockAction->shouldReceive('getData')->once();
-//        $mockAction->shouldReceive('query')->once();
         $this->kernel->setAction($action);
         $this->kernel->get();
 
     }
+
+    public function test_setCollection_exception()
+    {
+        $fakeText = $this->faker()->text(5);
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Expected word 'Collection' in parameter method setCollection received : " . $fakeText);
+        $this->kernel->setCollection($fakeText);
+    }
+
+    public function test_setCollection()
+    {
+        $fakeText = $this->faker()->word() . 'Collection';
+        $this->kernel->setCollection($fakeText);
+        $this->assertEquals($fakeText, $this->kernel->setCollection($fakeText));
+    }
+
+    public function test_getCollection()
+    {
+        $this->kernel->setCollection('TestCollection');
+        $this->assertEquals('TestCollection', $this->kernel->getCollection());
+    }
+
 }
