@@ -24,7 +24,7 @@ class Update implements Action, ActionGet, ActionSet
 {
     use ConstructorUrl;
 
-    protected $url = '/';
+    protected $url = '?';
 
     /**
      * Request type to created
@@ -119,6 +119,7 @@ class Update implements Action, ActionGet, ActionSet
                 ]);
 
             $body = $response->getBody();
+
             $this->kernel->getHandler()->parse($body->getContents());
         } catch (ClientException $e) {
 

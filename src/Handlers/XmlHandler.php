@@ -7,6 +7,8 @@ use agoalofalife\bpm\Contracts\Handler;
 /**
  * Class XmlHandler
  * @property string buildXml
+ * @property string response
+ * @property array validText
  * @package agoalofalife\bpm\Handlers
  */
 class XmlHandler implements Handler, Collection
@@ -57,22 +59,32 @@ class XmlHandler implements Handler, Collection
     */
     private $prefixNamespace = 'd';
 
+    /**
+     * @return string
+     */
     public function getAccept()
     {
         return '';
     }
 
+    /**
+     * @return string
+     */
     public function getContentType()
     {
         return 'application/atom+xml;type=entry';
     }
 
+    /**
+     * @param $response
+     * @return XmlHandler|array|mixed
+     */
     public function parse($response)
     {
         $this->response      = simplexml_load_string($response);
         $copyXml             = $this->response;
 
-        if ( $this->checkIntegrity($this->response) === false )
+        if ( $this->response === false || $this->checkIntegrity($this->response) === false )
         {
             return [];
         }
@@ -89,6 +101,10 @@ class XmlHandler implements Handler, Collection
             }
     }
 
+    /**
+     * @param $response
+     * @return bool
+     */
     public function checkIntegrity($response)
     {
         if ( empty($response->message) )
@@ -98,21 +114,33 @@ class XmlHandler implements Handler, Collection
         return false;
     }
 
+    /**
+     * @return array
+     */
     public function getData()
     {
         return $this->validText;
     }
 
+    /**
+     * @return array|null
+     */
     public function toArray()
     {
        return  $this->xmlToArrayRecursive($this->validText);
     }
 
+    /**
+     * @return \Illuminate\Support\Collection
+     */
     public function toArrayCollect()
     {
         return  collect($this->xmlToArrayRecursive($this->validText));
     }
 
+    /**
+     * @return string
+     */
     public function toJson()
     {
         return  json_encode($this->xmlToArrayRecursive($this->validText));
@@ -138,8 +166,8 @@ class XmlHandler implements Handler, Collection
 
     /**
      * Extraction array in response XML , more element one
-     * @return array
-     * @throws \ExceptionF
+     * @return XmlHandler
+     * @throws \Exception
      */
     private function arrayMany()
     {
@@ -148,7 +176,6 @@ class XmlHandler implements Handler, Collection
                 $this->validText[] =   $item->content->children( $this->namespaces['NamespaceMetadata'] )
                     ->children($this->namespaces['NamespaceDataServices']);
             }
-
             return $this;
         } catch (\Exception $e) {
             dd($this->responceXML);
@@ -169,7 +196,7 @@ class XmlHandler implements Handler, Collection
 
     /**
      * Xml text for request in Bpm Online
-     * @param $data
+     * @param $data array
      * @return string
      */
     public function create(array $data)
