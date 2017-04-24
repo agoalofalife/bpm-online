@@ -7,4 +7,8 @@ interface Authentication
     public function setConfig(array $configuration);
     public function auth();
     public function getPathCookieFile();
+
+    public function getCsrf();
+
+    public function getPrefixCSRF();
 }

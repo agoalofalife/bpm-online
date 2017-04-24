@@ -3,6 +3,7 @@ namespace agoalofalife\Tests\Actions;
 
 
 use agoalofalife\bpm\Actions\Create;
+use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\Tests\TestCase;
 
 class CreateTest extends TestCase
@@ -13,6 +14,11 @@ class CreateTest extends TestCase
     {
         parent::setUp();
         $this->creator = new Create();
+    }
+
+    public function test_instanceOf()
+    {
+        $this->assertInstanceOf(Action::class, $this->creator);
     }
 
     public function test_setData()

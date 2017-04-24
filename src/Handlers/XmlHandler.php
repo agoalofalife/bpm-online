@@ -64,7 +64,7 @@ class XmlHandler implements Handler, Collection
 
     public function getContentType()
     {
-        return '';
+        return 'application/atom+xml;type=entry';
     }
 
     public function parse($response)

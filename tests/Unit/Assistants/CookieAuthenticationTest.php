@@ -44,6 +44,11 @@ class CookieAuthenticationTest extends TestCase
             'UrlLogin' => 'https://ikratkoe.bpmonline.com/ServiceModel/AuthService.svc/Login'
         ]);
 
-        $this->assertEquals(true, $this->authClass->auth());
+        $this->assertRegExp('/200 OK/', $this->authClass->auth());
+    }
+
+    public function test_getCsrf()
+    {
+        $this->assertInternalType('string', $this->authClass->getCsrf());
     }
 }

@@ -9,6 +9,7 @@ use agoalofalife\bpm\Contracts\Authentication;
  */
 class CookieAuthentication implements Authentication
 {
+    protected $prefixCSRF       = 'BPMCSRF';
     protected $pathToCookieFile = __DIR__ . '/../resource/cookie.txt';
     protected $configuration;
 
@@ -34,7 +35,7 @@ class CookieAuthentication implements Authentication
                 "Content-type: application/json"
             );
 
-//            curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_HEADER, 1);
             curl_setopt($curl, CURLOPT_URL,  $this->configuration['UrlLogin']);
             curl_setopt($curl, CURLOPT_POST, true);
@@ -51,6 +52,26 @@ class CookieAuthentication implements Authentication
             $response = curl_exec($curl);
             curl_close($curl);
             ob_clean();
+
             return $response;
+    }
+
+    public function getPrefixCSRF()
+    {
+        return $this->prefixCSRF;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCsrf()
+    {
+        preg_match("/BPMCSRF\\s(.+)/", file_get_contents($this->pathToCookieFile), $matches);
+
+        if ( isset($matches[1]) === false )
+        {
+            return '';
+        }
+        return $matches[1];
     }
 }

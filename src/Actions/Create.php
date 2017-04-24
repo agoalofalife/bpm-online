@@ -43,7 +43,7 @@ class Create implements Action, ActionSet
     public function processData()
     {
         $this->query();
-        $this->kernel->getHandler();
+        return $this->kernel->getHandler();
     }
 
     public function setData(array $data)
@@ -64,22 +64,21 @@ class Create implements Action, ActionSet
                 [
                     'headers' => [
                         'HTTP/1.0',
-                        'Accept'       => $this->kernel->getHandler()->getContentType(),
-                        'Content-type' => $this->kernel->getHandler()->getAccept()
+                        'Accept'       => $this->kernel->getHandler()->getAccept(),
+                        'Content-type' => $this->kernel->getHandler()->getContentType(),
+                        app()->make(Authentication::class)->getPrefixCSRF()     => app()->make(Authentication::class)->getCsrf(),
                     ],
                     'curl' => [
                         CURLOPT_COOKIEFILE => app()->make(Authentication::class)->getPathCookieFile(),
-//                        CURLOPT_POSTFIELDS => $this->kernel->getHandler()->create($this->data)
                     ],
                     'body' => $this->kernel->getHandler()->create($this->data)
                 ]);
 
             $body = $response->getBody();
-            dd($body);
+
             $this->kernel->getHandler()->parse($body->getContents());
         } catch (ClientException $e) {
 
-            dd($e->getMessage());
             if ($e->getResponse()->getStatusCode() == 401 && $e->getResponse()->getReasonPhrase() == 'Unauthorized')
             {
                 $this->kernel->authentication();
