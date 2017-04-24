@@ -67,6 +67,7 @@ class JsonHandlerTest extends TestCase
 
     public function test_create()
     {
+        $this->assertJson($this->jsonHandler->create([]));
         $this->assertJson(($this->jsonHandler->create(["test" => "test"])));
     }
 }

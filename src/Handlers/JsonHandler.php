@@ -73,7 +73,10 @@ class JsonHandler implements Handler, Collection
 
     public function create(array $data)
     {
-        return $this->buildJson =json_encode($data);
+        if ( empty($data)){
+            return $this->buildJson = '{}';
+        }
+        return $this->buildJson = json_encode($data);
     }
 
     private function objectToArray($data)
