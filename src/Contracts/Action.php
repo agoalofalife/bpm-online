@@ -1,7 +1,5 @@
 <?php
 namespace agoalofalife\bpm\Contracts;
-
-
 use agoalofalife\bpm\KernelBpm;
 
 interface Action
@@ -12,8 +10,6 @@ interface Action
     public function getData();
 
     public function injectionKernel(KernelBpm $bpm);
-
-    public function query();
 
     public function getUrl();
 }

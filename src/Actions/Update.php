@@ -2,12 +2,12 @@
 namespace agoalofalife\bpm\Actions;
 
 
+
 use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\KernelBpm;
 
-class Create implements Action
+class Update implements Action
 {
-
 
     /**
      * @return array url -> string , http_type -> string

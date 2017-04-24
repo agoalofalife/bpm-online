@@ -28,7 +28,7 @@ class CookieAuthenticationTest extends TestCase
 
     public function test_getPathCookieFile()
     {
-        $this->assertEquals('/Users/chubarov/Desktop/agoalofalife:bpm-online/src/Assistants/../resource/cookie.txt', $this->authClass->getPathCookieFile());
+        $this->assertRegExp('/src\/Assistants\/\.\.\/resource\/cookie\.txt/', $this->authClass->getPathCookieFile());
     }
 
     public function test_auth_error()

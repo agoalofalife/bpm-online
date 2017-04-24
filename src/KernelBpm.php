@@ -2,13 +2,18 @@
 namespace agoalofalife\bpm;
 
 use agoalofalife\bpm\Actions\Create;
+use agoalofalife\bpm\Actions\Delete;
 use agoalofalife\bpm\Actions\Read;
+use agoalofalife\bpm\Actions\Update;
+use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\Contracts\Authentication;
+use agoalofalife\bpm\Contracts\Handler;
 use agoalofalife\bpm\Contracts\SourceConfiguration;
 use agoalofalife\bpm\Handlers\JsonHandler;
 use agoalofalife\bpm\Handlers\XmlHandler;
 use agoalofalife\bpm\ServiceProviders\ActionsServiceProviders;
 use agoalofalife\bpm\ServiceProviders\AuthenticationServiceProvider;
+use agoalofalife\bpm\ServiceProviders\ClientServiceProvider;
 use agoalofalife\bpm\ServiceProviders\ConfigurationServiceProvider;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
@@ -19,8 +24,8 @@ class KernelBpm
     protected $action = [
         'create' =>  Create::class,
         'read'   =>  Read::class,
-        'update' =>  '',
-        'delete' =>  '',
+        'update' =>  Update::class,
+        'delete' =>  Delete::class,
     ];
 
     protected $handlers = [
@@ -44,7 +49,8 @@ class KernelBpm
     protected $serviceProviders = [
         ConfigurationServiceProvider::class,
         ActionsServiceProviders::class,
-        AuthenticationServiceProvider::class
+        AuthenticationServiceProvider::class,
+        ClientServiceProvider::class,
     ];
 
     public function __construct()
@@ -65,6 +71,14 @@ class KernelBpm
     public function getCollection()
     {
         return $this->collection;
+    }
+
+    /**
+     * @return array
+     */
+    public function getListActions()
+    {
+        return $this->action;
     }
 
     /**
@@ -91,24 +105,65 @@ class KernelBpm
         config()->set($key, $array);
     }
 
+    /**
+     * @return Handler
+     */
     public function getHandler()
     {
         return $this->currentHandler;
     }
 
+    /**
+     * Set the response handler
+     * @param string $typeHandler default xml
+     * @return Action
+     */
+    public function setHandler($typeHandler = 'xml')
+    {
+        Assertion::keyIsset($this->handlers, $typeHandler);
+        $this->currentHandler = app()->make( $this->handlers[$typeHandler] );
+        return  $this->currentHandler;
+    }
+
+    /**
+     * @return Action
+     */
+    public function getAction()
+    {
+        return $this->currentAction;
+    }
+
+    /**
+     * @param $typeAction string
+     * @return Action
+     */
+    public function setAction($typeAction)
+    {
+        Assertion::keyIsset($this->action, $typeAction);
+
+        $this->currentAction  =  app()->make( $this->action[$typeAction] );
+
+        return $this->currentAction;
+    }
+
+    /**
+     * Example action parameter 'read:json'
+     * @param string $action
+     * @param callable $callback
+     * @return $this
+     */
     public function action($action, callable $callback)
     {
-        extract($this->splitAction($action));
 
-        if ( Assertion::classExists($action = $this->action[$action])  && Assertion::classExists($handler = $this->handlers[$handler]) )
-        {
-            $action               =  app()->make( $action );
-            $this->currentHandler =  app()->make( $handler );
+         extract($this->splitAction($action));
 
-            $action->injectionKernel($this);
-            call_user_func($callback, $action);
-            $this->currentAction = $action;
-        }
+         $action  = $this->setAction($action);
+         $this->setHandler($handler);
+
+        $action->injectionKernel($this);
+        call_user_func($callback, $action);
+        $this->currentAction = $action;
+
         return $this;
     }
 

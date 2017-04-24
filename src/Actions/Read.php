@@ -7,7 +7,7 @@ use agoalofalife\bpm\KernelBpm;
 use Assert\Assert;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 
 
@@ -84,15 +84,17 @@ class Read implements Action
 
     /**
      * Service resources can be obtained in the form of sort .
-     * @param      $asc
-     * @param null $param
+     * asc  ascending
+     * desc descending
+     * @param string $whatSort
+     * @param string $param  asc | desc
      * @return $this
      * @throws \Exception
      */
-    public function orderby($asc, $param = null)
+    public function orderBy($whatSort, $param = 'asc')
     {
         $ParameterQuery = '$orderby=';
-        $ParameterQuery.=  ucfirst($asc);
+        $ParameterQuery.=  ucfirst($whatSort);
 
         if ( empty($param) === false ) {
             if ($param != 'desc' && $param != 'asc') {
@@ -135,15 +137,17 @@ class Read implements Action
         return $this;
     }
 
-
-    public function query()
+    /**
+     * @return void
+     */
+    private function query()
     {
         $parameters = str_replace(' ', '%20', $this->url);
         $url        = $this->kernel->getCollection() . $parameters;
-        $client     = new Client(['base_uri' => config($this->kernel->getPrefixConfig() . '.UrlHome')]);
-
+        $client     = app()->make(ClientInterface::class);
+        $urlHome    = config($this->kernel->getPrefixConfig() . '.UrlHome');
         try {
-            $response = $client->request($this->HTTP_TYPE, $url,
+            $response = $client->request($this->HTTP_TYPE, $urlHome . $url,
                 [
                     'headers' => [
                         'HTTP/1.0',

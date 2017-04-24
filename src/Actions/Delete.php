@@ -2,10 +2,11 @@
 namespace agoalofalife\bpm\Actions;
 
 
+
 use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\KernelBpm;
 
-class Create implements Action
+class Delete implements Action
 {
 
 
