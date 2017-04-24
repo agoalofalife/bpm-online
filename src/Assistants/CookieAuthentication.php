@@ -66,6 +66,10 @@ class CookieAuthentication implements Authentication
      */
     public function getCsrf()
     {
+        if ( file_exists($this->pathToCookieFile) === false )
+        {
+            return '';
+        }
         preg_match("/BPMCSRF\\s(.+)/", file_get_contents($this->pathToCookieFile), $matches);
 
         if ( isset($matches[1]) === false )

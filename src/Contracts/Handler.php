@@ -14,4 +14,6 @@ interface Handler
      * @return
      */
     public function checkIntegrity($response);
+
+    public function create(array $data);
 }

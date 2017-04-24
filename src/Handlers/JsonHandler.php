@@ -5,15 +5,19 @@ namespace agoalofalife\bpm\Handlers;
 use agoalofalife\bpm\Contracts\Collection;
 use agoalofalife\bpm\Contracts\Handler;
 
+/**
+ * @property string buildJson
+ */
 class JsonHandler implements Handler, Collection
 {
     use XmlConverter;
 
     protected $response;
+    protected $buildJson;
 
     private $jsonPrefix     = 'd';
     private $jsonPrefixWord = 'results';
-    private $validText = [];
+    private $validText      = [];
 
     public function getAccept()
     {
@@ -67,6 +71,11 @@ class JsonHandler implements Handler, Collection
         return $this->validText;
     }
 
+    public function create(array $data)
+    {
+        return $this->buildJson =json_encode($data);
+    }
+
     private function objectToArray($data)
     {
         $result = array();
@@ -87,4 +96,5 @@ class JsonHandler implements Handler, Collection
         }
         return $result;
     }
+    
 }

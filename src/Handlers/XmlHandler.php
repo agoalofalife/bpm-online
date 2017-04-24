@@ -172,7 +172,7 @@ class XmlHandler implements Handler, Collection
      * @param $data
      * @return string
      */
-    public function create($data)
+    public function create(array $data)
     {
 
         //----------  Base  ----------//

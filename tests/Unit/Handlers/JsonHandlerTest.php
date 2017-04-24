@@ -64,4 +64,9 @@ class JsonHandlerTest extends TestCase
         $this->jsonHandler->parse($this->templateValid);
         $this->assertEquals($this->jsonHandler->getData(),  json_decode($this->templateValid)->d->results);
     }
+
+    public function test_create()
+    {
+        $this->assertJson(($this->jsonHandler->create(["test" => "test"])));
+    }
 }
