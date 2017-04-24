@@ -51,7 +51,7 @@ class Create implements Action, ActionSet
         $this->data = $data;
     }
 
-    public function query()
+    private function query()
     {
         $parameters = str_replace(' ', '%20', $this->url);
 
