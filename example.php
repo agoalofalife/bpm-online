@@ -47,9 +47,15 @@ $test->setCollection('CaseCollection');
 //dd($test, 'done');
 
 // 7 Example Update from API
-$test = $test->action('update:xml', function ($creator){
-    $creator->guid('')->setData([
-       'Number' => 'test'
-    ]);
+//$test = $test->action('update:json', function ($creator){
+//    $creator->guid('')->setData([
+//       'Number' => 'SR00006250(testJson)'
+//    ]);
+//})->get();
+//dd($test);
+
+// 8.  Example delete
+$test = $test->action('delete:xml', function ($creator){
+    $creator->guid('');
 })->get();
 dd($test);

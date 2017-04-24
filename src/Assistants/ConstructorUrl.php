@@ -8,6 +8,7 @@ namespace agoalofalife\bpm\Assistants;
  */
 trait ConstructorUrl
 {
+    use VerifyValues;
     /**
      * Concatenation Url In Curl
      * @param $newParameters string
@@ -23,5 +24,23 @@ trait ConstructorUrl
             $this->url .= '&'.$newParameters;
         }
         return $this;
+    }
+
+    /**
+     * Contains guid
+     * @param $guid
+     * @return $this
+     */
+    public function guid($guid)
+    {
+        $this->checkGuId($guid);
+        $this->url      = '';
+        $ParameterQuery = '(guid';
+        $ParameterQuery.= "'";
+        $ParameterQuery.= $guid;
+        $ParameterQuery.= "'";
+        $ParameterQuery.=')';
+
+        return $this->concatenationUrlCurl($ParameterQuery);
     }
 }

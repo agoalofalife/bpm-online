@@ -33,9 +33,10 @@ class ReadTest extends TestCase
     }
     public function test_guid_exception()
     {
-        $this->expectExceptionMessage('Your guid ?? does not match the mask : 00000000-0000-0000-0000-000000000000');
+        $fakeText  = $this->faker()->word;
+        $this->expectExceptionMessage("Value \"$fakeText\" does not match expression.");
         $this->expectException(\Exception::class);
-        $this->action->guid('??');
+        $this->action->guid($fakeText);
     }
 
     public function test_guid()

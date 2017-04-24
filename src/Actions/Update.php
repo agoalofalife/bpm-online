@@ -21,7 +21,7 @@ use GuzzleHttp\Exception\ClientException;
  */
 class Update implements Action, ActionGet, ActionSet
 {
-    use ConstructorUrl, VerifyValues;
+    use ConstructorUrl;
 
     protected $url = '?';
 
@@ -74,23 +74,6 @@ class Update implements Action, ActionGet, ActionSet
     public function getData()
     {
         return $this->data;
-    }
-
-    /**
-     * @param $guid string
-     * @return $this
-     */
-    public function guid($guid)
-    {
-        $this->checkGuId($guid);
-        $this->url      = '';
-        $ParameterQuery = '(guid';
-        $ParameterQuery.= "'";
-        $ParameterQuery.= $guid;
-        $ParameterQuery.= "'";
-        $ParameterQuery.=')';
-
-        return $this->concatenationUrlCurl($ParameterQuery);
     }
 
     /**

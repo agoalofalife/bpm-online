@@ -16,7 +16,7 @@ use GuzzleHttp\Exception\ClientException;
 
 class Read implements Action, ActionGet
 {
-    use ConstructorUrl, VerifyValues;
+    use ConstructorUrl;
 
     protected $kernel;
 
@@ -50,26 +50,6 @@ class Read implements Action, ActionGet
     public function getData()
     {
         $this->query();
-    }
-
-    /**
-     * @param $guid string
-     * @return $this
-     * @throws \Exception
-     */
-    public function guid($guid)
-    {
-        try{
-           $this->checkGuId($guid);
-            $ParameterQuery = '(guid'.'\'' . $guid . '\''.')';
-            $this->url = '';
-            $this->concatenationUrlCurl($ParameterQuery);
-
-            return $this;
-        } catch(AssertionFailedException $e) {
-            throw new \Exception("Your guid {$e->getValue()} does not match the mask : 00000000-0000-0000-0000-000000000000");
-        }
-
     }
 
     /**
