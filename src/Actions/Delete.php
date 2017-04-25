@@ -5,7 +5,6 @@ use agoalofalife\bpm\Assistants\ConstructorUrl;
 use agoalofalife\bpm\Assistants\QueryBuilder;
 use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\Contracts\ActionGet;
-use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\KernelBpm;
 
 /**
