@@ -15,13 +15,12 @@ use agoalofalife\bpm\KernelBpm;
  * @property array data
  * @package agoalofalife\bpm\Actions
  */
-class Delete implements Action, ActionGet
+class Delete implements Action
 {
     use ConstructorUrl, QueryBuilder;
 
     protected $kernel;
     protected $url = '?';
-    protected $data = [];
     /**
      * Type of Request to delete
      * @var string
@@ -48,14 +47,6 @@ class Delete implements Action, ActionGet
     {
         $this->query();
         return $this->kernel->getHandler();
-    }
-
-    /**
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->getData();
     }
 
     private function query()
