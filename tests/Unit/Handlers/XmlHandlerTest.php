@@ -18,7 +18,7 @@ class XmlHandlerTest extends TestCase
 
     public function test_getAccept()
     {
-        $this->assertEquals('', $this->xml->getAccept());
+        $this->assertEquals('application/atom+xml;type=entry', $this->xml->getAccept());
     }
 
     public function test_getContentType()
