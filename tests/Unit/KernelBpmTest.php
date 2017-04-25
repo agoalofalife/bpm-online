@@ -6,6 +6,7 @@ use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\Contracts\Handler;
 use agoalofalife\bpm\KernelBpm;
+use agoalofalife\bpm\SourcesConfigurations\File;
 use Assert\InvalidArgumentException;
 use GuzzleHttp\ClientInterface;
 
@@ -70,13 +71,16 @@ class KernelBpmTest extends TestCase
         $this->assertInstanceOf(Handler::class, $this->kernel->setHandler($type));
     }
 
-    public function test_getAction()
+    public function test_getAction_with_Object()
     {
         $typeAction = $this->allActions->random();
-
         $this->assertInstanceOf(Action::class, $this->kernel->setAction($typeAction));
     }
 
+    public function test_getAction()
+    {
+        $this->assertNull($this->kernel->getAction());
+    }
     public function test_setAction_exception()
     {
         $fakeAction = $this->faker()->text(5);
@@ -85,6 +89,13 @@ class KernelBpmTest extends TestCase
         $this->kernel->setAction($fakeAction);
     }
 
+    public function test_loadConfiguration()
+    {
+        $file = $this->mock(File::class);
+        $file->shouldReceive('getName')->once();
+        $file->shouldReceive('get')->once();
+        $this->kernel->loadConfiguration($file);
+    }
     public function test_setAction()
     {
         $typeAction = $this->allActions->random();

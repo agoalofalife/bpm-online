@@ -3,10 +3,11 @@ namespace agoalofalife\Tests\ServiceProviders;
 
 
 use agoalofalife\bpm\Contracts\ServiceProvider;
+use agoalofalife\bpm\ServiceProviders\LoggerServiceProvider;
 use agoalofalife\Tests\TestCase;
 use Monolog\Logger;
 
-class LoggerServiceProvider extends TestCase
+class LoggerServiceProviderTest extends TestCase
 {
     protected $providers;
 

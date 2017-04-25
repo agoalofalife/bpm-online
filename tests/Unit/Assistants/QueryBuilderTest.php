@@ -7,6 +7,7 @@ use agoalofalife\bpm\Assistants\QueryBuilder;
 use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\KernelBpm;
 use agoalofalife\Tests\TestCase;
+use GuzzleHttp\TransferStats;
 use Monolog\Logger;
 
 class QueryBuilderTest extends TestCase
