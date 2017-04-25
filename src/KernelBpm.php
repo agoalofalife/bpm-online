@@ -17,6 +17,7 @@ use agoalofalife\bpm\ServiceProviders\ClientServiceProvider;
 use agoalofalife\bpm\ServiceProviders\ConfigurationServiceProvider;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
+use GuzzleHttp\ClientInterface;
 
 /**
  * Class KernelBpm
@@ -214,6 +215,13 @@ class KernelBpm
         return $this->collection;
     }
 
+    /**
+     * @return ClientInterface
+     */
+    public function getCurl()
+    {
+        return app()->make(ClientInterface::class);
+    }
     /**
      * @param $action
      * @return array

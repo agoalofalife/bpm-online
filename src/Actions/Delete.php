@@ -66,12 +66,10 @@ class Delete implements Action, ActionGet
         $parameters = str_replace(' ', '%20', $this->url);
 
         $url        = $this->kernel->getCollection() . $parameters;
-        $client     = app()->make(ClientInterface::class);
         $urlHome    = config($this->kernel->getPrefixConfig() . '.UrlHome');
 
-
         try {
-            $response = $client->request($this->HTTP_TYPE, $urlHome . $url,
+            $response =  $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
                 [
                     'headers' => [
                         'HTTP/1.0',

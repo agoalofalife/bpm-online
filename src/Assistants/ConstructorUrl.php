@@ -9,6 +9,7 @@ namespace agoalofalife\bpm\Assistants;
 trait ConstructorUrl
 {
     use VerifyValues;
+
     /**
      * Concatenation Url In Curl
      * @param $newParameters string

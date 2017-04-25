@@ -2,18 +2,22 @@
 namespace agoalofalife\bpm\Actions;
 
 use agoalofalife\bpm\Assistants\ConstructorUrl;
-use agoalofalife\bpm\Assistants\VerifyValues;
 use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\Contracts\ActionGet;
 use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\KernelBpm;
 use Assert\Assert;
-use Assert\Assertion;
-use Assert\AssertionFailedException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 
-
+/**
+ * Class Read
+ * @property KernelBpm $kernel
+ * @property string $HTTP_TYPE GET | POST | PUT | DELETE
+ * @property string $url
+ * @uses     ConstructorUrl trait
+ * @package agoalofalife\bpm\Actions
+ */
 class Read implements Action, ActionGet
 {
     use ConstructorUrl;
@@ -28,11 +32,18 @@ class Read implements Action, ActionGet
 
     protected $url = '?';
 
+    /**
+     * @param KernelBpm $bpm
+     * @return  void
+     */
     public function injectionKernel(KernelBpm $bpm)
     {
         $this->kernel = $bpm;
     }
 
+    /**
+     * @return string url
+     */
     public function getUrl()
     {
         return $this->url;
@@ -133,11 +144,10 @@ class Read implements Action, ActionGet
     {
         $parameters = str_replace(' ', '%20', $this->url);
         $url        = $this->kernel->getCollection() . $parameters;
-        $client     = app()->make(ClientInterface::class);
         $urlHome    = config($this->kernel->getPrefixConfig() . '.UrlHome');
 
         try {
-            $response = $client->request($this->HTTP_TYPE, $urlHome . $url,
+            $response =  $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
                 [
                     'headers' => [
                         'HTTP/1.0',

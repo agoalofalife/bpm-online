@@ -7,6 +7,7 @@ use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\Contracts\Handler;
 use agoalofalife\bpm\KernelBpm;
 use Assert\InvalidArgumentException;
+use GuzzleHttp\ClientInterface;
 
 class KernelBpmTest extends TestCase
 {
@@ -132,4 +133,8 @@ class KernelBpmTest extends TestCase
         $this->assertEquals('TestCollection', $this->kernel->getCollection());
     }
 
+    public function test_getCurl()
+    {
+        $this->assertInstanceOf(ClientInterface::class, $this->kernel->getCurl());
+    }
 }
