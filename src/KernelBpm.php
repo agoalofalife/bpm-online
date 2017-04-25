@@ -18,7 +18,19 @@ use agoalofalife\bpm\ServiceProviders\ConfigurationServiceProvider;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 
-
+/**
+ * Class KernelBpm
+ * @property array    $action list action
+ * @property array    $handlers list handler xml | json
+ * @property string   $collection Name collection in Bpm
+ * @property Action   $currentAction current action which use in client code
+ * @property Handler  $currentHandler current handler which use in client code
+ * @property string   $url
+ * @property string   $prefixConfiguration prefix for set and search in Repository class
+ * @property array    $serviceProviders list ServiceProvider for bootstrap
+ *
+ * @package agoalofalife\bpm
+ */
 class KernelBpm
 {
     protected $action = [
@@ -58,6 +70,10 @@ class KernelBpm
         $this->bootstrapping();
     }
 
+    /**
+     * Auth in Bpm online
+     * @return  void
+     */
     public function authentication()
     {
         $auth = app()->make(Authentication::class);
@@ -66,6 +82,7 @@ class KernelBpm
     }
 
     /**
+     * Get list actions
      * @return array
      */
     public function getListActions()
@@ -81,6 +98,9 @@ class KernelBpm
         return $this->prefixConfiguration;
     }
 
+    /**
+     * @param SourceConfiguration $configuration
+     */
     public function loadConfiguration(SourceConfiguration $configuration)
     {
         config()->set(  $this->prefixConfiguration = $configuration->getName(), $configuration->get());
@@ -194,6 +214,10 @@ class KernelBpm
         return $this->collection;
     }
 
+    /**
+     * @param $action
+     * @return array
+     */
     private function splitAction($action)
     {
         $split = explode(':', $action);
