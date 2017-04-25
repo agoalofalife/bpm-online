@@ -7,7 +7,6 @@ use agoalofalife\bpm\Contracts\ActionGet;
 use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\KernelBpm;
 use Assert\Assert;
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 
 /**
@@ -142,33 +141,31 @@ class Read implements Action, ActionGet
      */
     private function query()
     {
-        $parameters = str_replace(' ', '%20', $this->url);
-        $url        = $this->kernel->getCollection() . $parameters;
-        $urlHome    = config($this->kernel->getPrefixConfig() . '.UrlHome');
+        $parameters   = str_replace(' ', '%20', $this->url);
+        $url          = $this->kernel->getCollection() . $parameters;
+        $urlHome      = config($this->kernel->getPrefixConfig() . '.UrlHome');
 
-        try {
-            $response =  $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
+        $response     =  $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
                 [
                     'headers' => [
                         'HTTP/1.0',
                         'Accept'       => $this->kernel->getHandler()->getContentType(),
-                        'Content-type' => $this->kernel->getHandler()->getAccept()
+                        'Content-type' => $this->kernel->getHandler()->getAccept(),
+                        app()->make(Authentication::class)->getPrefixCSRF()     => app()->make(Authentication::class)->getCsrf(),
                     ],
                     'curl' => [
                         CURLOPT_COOKIEFILE => app()->make(Authentication::class)->getPathCookieFile()
-                    ]
+                    ],
+                    'http_errors' => false
                 ]);
 
-            $body = $response->getBody();
+        $body         = $response->getBody();
+        $this->kernel->getHandler()->parse($body->getContents());
 
-            $this->kernel->getHandler()->parse($body->getContents());
-        } catch (ClientException $e) {
-
-            if ($e->getResponse()->getStatusCode() == 401 && $e->getResponse()->getReasonPhrase() == 'Unauthorized')
-            {
-                $this->kernel->authentication();
-                return $this->query();
-            }
+        if ( $response->getStatusCode() == 401 && $response->getReasonPhrase() == 'Unauthorized' )
+        {
+            $this->kernel->authentication();
+            $this->query();
         }
     }
 }

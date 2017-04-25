@@ -2,13 +2,11 @@
 namespace agoalofalife\bpm\Actions;
 
 use agoalofalife\bpm\Assistants\ConstructorUrl;
-use agoalofalife\bpm\Assistants\VerifyValues;
 use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\Contracts\ActionGet;
 use agoalofalife\bpm\Contracts\ActionSet;
 use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\KernelBpm;
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 
 /**
@@ -85,31 +83,28 @@ class Update implements Action, ActionGet, ActionSet
         $url        = $this->kernel->getCollection() . $parameters;
         $urlHome    = config($this->kernel->getPrefixConfig() . '.UrlHome');
 
-        try {
-            $response =  $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
-                [
-                    'headers' => [
-                        'HTTP/1.0',
-                        'Accept'       => $this->kernel->getHandler()->getAccept(),
-                        'Content-type' => $this->kernel->getHandler()->getContentType(),
-                        app()->make(Authentication::class)->getPrefixCSRF()     => app()->make(Authentication::class)->getCsrf(),
-                    ],
-                    'curl' => [
-                        CURLOPT_COOKIEFILE => app()->make(Authentication::class)->getPathCookieFile(),
-                    ],
-                    'body' => $this->kernel->getHandler()->create($this->data)
-                ]);
+        $response   =  $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
+            [
+                'headers' => [
+                    'HTTP/1.0',
+                    'Accept'       => $this->kernel->getHandler()->getAccept(),
+                    'Content-type' => $this->kernel->getHandler()->getContentType(),
+                    app()->make(Authentication::class)->getPrefixCSRF()     => app()->make(Authentication::class)->getCsrf(),
+                ],
+                'curl' => [
+                    CURLOPT_COOKIEFILE => app()->make(Authentication::class)->getPathCookieFile(),
+                ],
+                'body' => $this->kernel->getHandler()->create($this->data),
+                'http_errors' => false
+            ]);
+        $body       = $response->getBody();
 
-            $body = $response->getBody();
+        $this->kernel->getHandler()->parse($body->getContents());
 
-            $this->kernel->getHandler()->parse($body->getContents());
-        } catch (ClientException $e) {
-
-            if ($e->getResponse()->getStatusCode() == 401 && $e->getResponse()->getReasonPhrase() == 'Unauthorized')
-            {
-                $this->kernel->authentication();
-                return $this->query();
-            }
+        if ( $response->getStatusCode() == 401 && $response->getReasonPhrase() == 'Unauthorized' )
+        {
+            $this->kernel->authentication();
+            $this->query();
         }
     }
 

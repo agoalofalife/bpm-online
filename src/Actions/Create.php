@@ -6,8 +6,6 @@ use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\Contracts\ActionSet;
 use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\KernelBpm;
-use Assert\Assertion;
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 
 /**
@@ -58,8 +56,7 @@ class Create implements Action, ActionSet
         $url        = $this->kernel->getCollection() . $parameters;
         $urlHome    = config($this->kernel->getPrefixConfig() . '.UrlHome');
 
-        try {
-            $response =  $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
+        $response   =  $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
                 [
                     'headers' => [
                         'HTTP/1.0',
@@ -70,18 +67,10 @@ class Create implements Action, ActionSet
                     'curl' => [
                         CURLOPT_COOKIEFILE => app()->make(Authentication::class)->getPathCookieFile(),
                     ],
-                    'body' => $this->kernel->getHandler()->create($this->data)
+                    'body' => $this->kernel->getHandler()->create($this->data),
+                    'http_errors' => false
                 ]);
-
-            $body = $response->getBody();
-            $this->kernel->getHandler()->parse($body->getContents());
-        } catch (ClientException $e) {
-
-            if ($e->getResponse()->getStatusCode() == 401 && $e->getResponse()->getReasonPhrase() == 'Unauthorized')
-            {
-                $this->kernel->authentication();
-                return $this->query();
-            }
-        }
+        $body       = $response->getBody();
+        $this->kernel->getHandler()->parse($body->getContents());
     }
 }
