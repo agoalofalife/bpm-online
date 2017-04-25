@@ -14,7 +14,7 @@ class LoggerServiceProvider implements ServiceProvider
     {
         app()->bind(Logger::class, function(){
             $log = new Logger(KernelBpm::class);
-           return  $log->pushHandler(new StreamHandler(KernelBpm::PATH_LOG . date('Y-m-d'), Logger::DEBUG));
+           return  $log->pushHandler(new StreamHandler(KernelBpm::PATH_LOG . date('Y-m-d'). '.txt', Logger::DEBUG));
         });
     }
 }

@@ -1,3 +1,5 @@
 /vendor
 composer.lock
 example.php
+src/resource/logs/*
+src/resource/cookie.txt
