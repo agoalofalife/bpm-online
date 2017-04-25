@@ -7,7 +7,6 @@ use agoalofalife\bpm\Contracts\ActionGet;
 use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\KernelBpm;
 use Assert\Assert;
-use GuzzleHttp\Exception\ClientException;
 
 /**
  * Class Read
@@ -145,7 +144,7 @@ class Read implements Action, ActionGet
         $url          = $this->kernel->getCollection() . $parameters;
         $urlHome      = config($this->kernel->getPrefixConfig() . '.UrlHome');
 
-        $response     =  $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
+        $response     = $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
                 [
                     'headers' => [
                         'HTTP/1.0',
@@ -158,8 +157,8 @@ class Read implements Action, ActionGet
                     ],
                     'http_errors' => false
                 ]);
-
         $body         = $response->getBody();
+
         $this->kernel->getHandler()->parse($body->getContents());
 
         if ( $response->getStatusCode() == 401 && $response->getReasonPhrase() == 'Unauthorized' )
