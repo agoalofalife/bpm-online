@@ -2,14 +2,11 @@
 namespace agoalofalife\bpm\Actions;
 
 use agoalofalife\bpm\Assistants\ConstructorUrl;
+use agoalofalife\bpm\Assistants\QueryBuilder;
 use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\Contracts\ActionGet;
-use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\KernelBpm;
 use Assert\Assert;
-use GuzzleHttp\TransferStats;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 
 
 /**
@@ -22,7 +19,7 @@ use Monolog\Logger;
  */
 class Read implements Action, ActionGet
 {
-    use ConstructorUrl;
+    use ConstructorUrl, QueryBuilder;
 
     protected $kernel;
 
@@ -150,30 +147,8 @@ class Read implements Action, ActionGet
         $urlHome      = config($this->kernel->getPrefixConfig() . '.UrlHome');
 
         $response     = $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
-                [
-                    'on_stats' => function (TransferStats $stats) {
-                        app(Logger::class)->debug('api', [
-                            'time'    =>  $stats->getTransferTime() ,
-                            'request' =>
-                                [
-                                    'header' => $stats->getRequest()->getHeaders(),
-                                    'body'   => $stats->getRequest()->getBody()->getContents(),
-                                    'method' => $stats->getRequest()->getMethod(),
-                                    'url'    => $stats->getRequest()->getUri()
-                                ]
-                        ]);
-                    },
-                    'headers' => [
-                        'HTTP/1.0',
-                        'Accept'       => $this->kernel->getHandler()->getContentType(),
-                        'Content-type' => $this->kernel->getHandler()->getAccept(),
-                        app()->make(Authentication::class)->getPrefixCSRF()     => app()->make(Authentication::class)->getCsrf(),
-                    ],
-                    'curl' => [
-                        CURLOPT_COOKIEFILE => app()->make(Authentication::class)->getPathCookieFile()
-                    ],
-                    'http_errors' => false
-                ]);
+                         $this->debug()->headers()->getCookie()->httpErrorsFalse()->get()
+        );
         $body         = $response->getBody();
 
         $this->kernel->getHandler()->parse($body->getContents());

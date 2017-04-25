@@ -2,6 +2,7 @@
 namespace agoalofalife\bpm\Actions;
 
 use agoalofalife\bpm\Assistants\ConstructorUrl;
+use agoalofalife\bpm\Assistants\QueryBuilder;
 use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\Contracts\ActionGet;
 use agoalofalife\bpm\Contracts\Authentication;
@@ -17,7 +18,7 @@ use agoalofalife\bpm\KernelBpm;
  */
 class Delete implements Action, ActionGet
 {
-    use ConstructorUrl;
+    use ConstructorUrl, QueryBuilder;
 
     protected $kernel;
     protected $url = '?';
@@ -66,27 +67,17 @@ class Delete implements Action, ActionGet
         $urlHome    = config($this->kernel->getPrefixConfig() . '.UrlHome');
 
 
-            $response =  $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
-                [
-                    'headers' => [
-                        'HTTP/1.0',
-                        'Accept'       => $this->kernel->getHandler()->getAccept(),
-                        'Content-type' => $this->kernel->getHandler()->getContentType(),
-                        app()->make(Authentication::class)->getPrefixCSRF()     => app()->make(Authentication::class)->getCsrf(),
-                    ],
-                    'curl' => [
-                        CURLOPT_COOKIEFILE => app()->make(Authentication::class)->getPathCookieFile(),
-                    ],
-                    'http_errors' => false
-                ]);
+        $response =  $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
+                     $this->headers()->getCookie()->httpErrorsFalse()->get()
+        );
 
-            $body = $response->getBody();
-            $this->kernel->getHandler()->parse($body->getContents());
+        $body = $response->getBody();
+        $this->kernel->getHandler()->parse($body->getContents());
 
-            if ( $response->getStatusCode() == 401 && $response->getReasonPhrase() == 'Unauthorized' )
-            {
-                $this->kernel->authentication();
-                $this->query();
-            }
+        if ( $response->getStatusCode() == 401 && $response->getReasonPhrase() == 'Unauthorized' )
+        {
+            $this->kernel->authentication();
+            $this->query();
+        }
     }
 }

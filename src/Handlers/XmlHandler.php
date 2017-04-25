@@ -64,7 +64,7 @@ class XmlHandler implements Handler, Collection
      */
     public function getAccept()
     {
-        return '';
+        return 'application/atom+xml;type=entry';
     }
 
     /**

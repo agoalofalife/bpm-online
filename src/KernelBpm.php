@@ -22,6 +22,7 @@ use GuzzleHttp\ClientInterface;
 
 /**
  * Class KernelBpm
+ * @const    string   PATH_LOG
  * @property array    $action list action
  * @property array    $handlers list handler xml | json
  * @property string   $collection Name collection in Bpm
@@ -138,7 +139,7 @@ class KernelBpm
     public function setHandler($typeHandler = 'xml')
     {
         Assertion::keyIsset($this->handlers, $typeHandler);
-        $this->currentHandler = app()->make( $this->handlers[$typeHandler] );
+        $this->currentHandler = app($this->handlers[$typeHandler]);
         return  $this->currentHandler;
     }
 
