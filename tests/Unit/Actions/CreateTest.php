@@ -4,6 +4,7 @@ namespace agoalofalife\Tests\Actions;
 
 use agoalofalife\bpm\Actions\Create;
 use agoalofalife\bpm\Contracts\Action;
+use agoalofalife\bpm\KernelBpm;
 use agoalofalife\Tests\TestCase;
 
 class CreateTest extends TestCase
@@ -21,6 +22,10 @@ class CreateTest extends TestCase
         $this->assertInstanceOf(Action::class, $this->creator);
     }
 
+    public function test_injectionKernel()
+    {
+        $this->creator->injectionKernel(new KernelBpm());
+    }
     public function test_setData()
     {
         $this->creator->setData([]);

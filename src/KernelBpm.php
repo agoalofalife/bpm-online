@@ -36,7 +36,7 @@ use GuzzleHttp\ClientInterface;
  */
 class KernelBpm
 {
-    const PATH_LOG = __DIR__ . '/resource/logs/bpm.log';
+    const PATH_LOG = __DIR__ . '/resource/logs';
 
     protected $action = [
         'create' =>  Create::class,
