@@ -89,28 +89,34 @@ class ReadTest extends TestCase
         $this->action->amount(10);
         $this->assertEquals('?$top=10', $this->action->getUrl());
     }
-    // TODO so while it is impossible to test
-//    public function test_getData()
-//    {
-//        $client = $this->mock(Client::class);
-//        $kernel = $this->mock(KernelBpm::class);
-//        $config = $this->mock(Repository::class);
-//
-//
-//        app()->instance(ClientInterface::class, $client);
-//        app()->instance('config', $config);
-//
-//
-//        $this->action->injectionKernel($kernel);
-//        $config->shouldReceive('get')->once();;
-//        $client->shouldReceive('request')->once();;
-//        $kernel->shouldReceive('getCollection')->once();
-//        $kernel->shouldReceive('getPrefixConfig')->once();
-//        $kernel->shouldReceive('getHandler');
-//
-////        $kernel->shouldReceive('getContentType')->once();
-//
-//        $this->action->getData();
-//
-//    }
+
+    public function test_processData()
+    {
+        $config = $this->mock(new Repository());
+        app()->instance('config', $config);
+
+        $kernel = $this->mock(KernelBpm::class);
+        $this->action->injectionKernel($kernel);
+
+        $curl   = $this->mock(Client::class);
+        app()->instance(ClientInterface::class, $curl);
+
+        $response  = $this->mock(ResponseInterface::class);
+        $stream    = $this->mock(StreamInterface::class);
+        $handler   = $this->mock(XmlHandler::class);
+        $kernel->shouldReceive('getCollection')->once();
+        $kernel->shouldReceive('getPrefixConfig')->once();
+        $kernel->shouldReceive('getHandler')->times(4)->andReturn($handler);
+        $handler->shouldReceive('getContentType')->times(1);
+        $handler->shouldReceive('getAccept')->times(1);
+        $handler->shouldReceive('parse')->once();
+        $response->shouldReceive('getStatusCode')->once();
+        $kernel->shouldReceive('getCurl')->once()->andReturn($curl);
+        $curl->shouldReceive('request')->once()->andReturn($response);
+        $response->shouldReceive('getBody')->once()->andReturn($stream);
+        $stream->shouldReceive('getContents')->once()->andReturn('');
+
+
+        $this->action->processData();
+    }
 }

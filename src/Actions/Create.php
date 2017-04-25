@@ -63,5 +63,11 @@ class Create implements Action, ActionSet
         );
         $body       = $response->getBody();
         $this->kernel->getHandler()->parse($body->getContents());
+
+        if ( $response->getStatusCode() == 401 && $response->getReasonPhrase() == 'Unauthorized' )
+        {
+            $this->kernel->authentication();
+            $this->query();
+        }
     }
 }

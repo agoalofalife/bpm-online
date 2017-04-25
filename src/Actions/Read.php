@@ -5,6 +5,7 @@ use agoalofalife\bpm\Assistants\ConstructorUrl;
 use agoalofalife\bpm\Assistants\QueryBuilder;
 use agoalofalife\bpm\Contracts\Action;
 use agoalofalife\bpm\Contracts\ActionGet;
+use agoalofalife\bpm\Contracts\Handler;
 use agoalofalife\bpm\KernelBpm;
 use Assert\Assert;
 
@@ -49,7 +50,7 @@ class Read implements Action, ActionGet
     }
 
     /**
-     * @return array url -> string , http_type -> string
+     * @return Handler
      */
     public function processData()
     {
