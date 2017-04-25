@@ -7,6 +7,10 @@ use agoalofalife\bpm\Contracts\ActionGet;
 use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\KernelBpm;
 use Assert\Assert;
+use GuzzleHttp\TransferStats;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+
 
 /**
  * Class Read
@@ -136,6 +140,7 @@ class Read implements Action, ActionGet
     }
 
     /**
+     * TODO Requires refactoring of this method
      * @return void
      */
     private function query()
@@ -146,6 +151,18 @@ class Read implements Action, ActionGet
 
         $response     = $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
                 [
+                    'on_stats' => function (TransferStats $stats) {
+                        app(Logger::class)->debug('api', [
+                            'time'    =>  $stats->getTransferTime() ,
+                            'request' =>
+                                [
+                                    'header' => $stats->getRequest()->getHeaders(),
+                                    'body'   => $stats->getRequest()->getBody()->getContents(),
+                                    'method' => $stats->getRequest()->getMethod(),
+                                    'url'    => $stats->getRequest()->getUri()
+                                ]
+                        ]);
+                    },
                     'headers' => [
                         'HTTP/1.0',
                         'Accept'       => $this->kernel->getHandler()->getContentType(),

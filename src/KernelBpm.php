@@ -15,6 +15,7 @@ use agoalofalife\bpm\ServiceProviders\ActionsServiceProviders;
 use agoalofalife\bpm\ServiceProviders\AuthenticationServiceProvider;
 use agoalofalife\bpm\ServiceProviders\ClientServiceProvider;
 use agoalofalife\bpm\ServiceProviders\ConfigurationServiceProvider;
+use agoalofalife\bpm\ServiceProviders\LoggerServiceProvider;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 use GuzzleHttp\ClientInterface;
@@ -34,6 +35,8 @@ use GuzzleHttp\ClientInterface;
  */
 class KernelBpm
 {
+    const PATH_LOG = __DIR__ . '/resource/logs/bpm.log';
+
     protected $action = [
         'create' =>  Create::class,
         'read'   =>  Read::class,
@@ -64,6 +67,7 @@ class KernelBpm
         ActionsServiceProviders::class,
         AuthenticationServiceProvider::class,
         ClientServiceProvider::class,
+        LoggerServiceProvider::class
     ];
 
     public function __construct()

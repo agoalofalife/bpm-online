@@ -19,7 +19,8 @@
         "illuminate/config": "5.4.*",
         "guzzlehttp/guzzle": "~6.0",
         "symfony/var-dumper": "^3.2",
-        "akamon/mockery-callable-mock": "dev-master"
+        "akamon/mockery-callable-mock": "dev-master",
+        "monolog/monolog": "1.*"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.6",
