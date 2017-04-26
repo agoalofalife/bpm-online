@@ -1,15 +1,16 @@
 <?php
 namespace agoalofalife\Tests\Handlers;
 
-
 use agoalofalife\bpm\Handlers\XmlHandler;
 use agoalofalife\Tests\TestCase;
+use Illuminate\Support\Collection;
 
 
 class XmlHandlerTest extends TestCase
 {
     protected $xml;
-
+    protected  $fileArrayOne       = __DIR__.'/../../fakeFile/ArrayOne.xml';
+    protected  $fileArrayWorkspace = __DIR__.'/../../fakeFile/workspace.xml';
     public function setUp()
     {
         parent::setUp();
@@ -34,6 +35,17 @@ class XmlHandlerTest extends TestCase
     public function test_parse()
     {
         $this->assertInstanceOf(XmlHandler::class, $this->xml->parse('<parent><one>Have</one></parent>'));
+    }
+
+    public function test_parse_array_one()
+    {
+        $this->assertInstanceOf(XmlHandler::class, $this->xml->parse(file_get_contents($this->fileArrayOne)));
+    }
+
+    public function test_workspace()
+    {
+        $this->assertInstanceOf(XmlHandler::class, $this->xml->parse(file_get_contents($this->fileArrayWorkspace)));
+
     }
 
     public function test_checkIntegrity_true()
@@ -74,6 +86,10 @@ XML;
         $this->assertEquals([], $this->xml->getData());
     }
 
+    public function test_toArrayCollect()
+    {
+        $this->assertInstanceOf(Collection::class, $this->xml->toArrayCollect());
+    }
     public function test_toArray_empty()
     {
         $this->assertNull($this->xml->toArray());

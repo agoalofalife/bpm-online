@@ -2,4 +2,6 @@
 composer.lock
 example.php
 src/resource/logs/*
-src/resource/cookie.txt
+src/resource/c
+ookie.txt
+tests/Coverage

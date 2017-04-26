@@ -154,10 +154,6 @@ class XmlHandler implements Handler, Collection
      */
     private function workspace()
     {
-        if ( !empty($this->response->message->collection->title) ) {
-            throw new \Exception("responce BPM API : ".
-                $this->response->innererror->message.". ENG :".  $this->response->message);
-        }
         foreach ($this->response->workspace->collection as $item) {
             $this->validText[] = get_object_vars($item->children(  $this->namespaces['NamespaceAtom'] ))['title'];
         }

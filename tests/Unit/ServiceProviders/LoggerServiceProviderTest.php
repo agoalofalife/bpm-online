@@ -26,6 +26,7 @@ class LoggerServiceProviderTest extends TestCase
     {
         $this->providers->register();
         $this->assertTrue(app()->bound(Logger::class));
+        $this->assertInstanceOf(Logger::class, app(Logger::class));
     }
 
 }

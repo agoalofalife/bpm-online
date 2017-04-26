@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xml:base="" xmlns="http://www.w3.org/2005/Atom" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:georss="http://www.georss.org/georss" xmlns:gml="http://www.opengis.net/gml">
+    <content type="application/xml">
+        <m:properties>
+            <d:Id m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:Id>
+            <d:Name></d:Name>
+            <d:PhotoId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:PhotoId>
+            <d:OwnerId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:OwnerId>
+            <d:CreatedOn m:type="Edm.DateTime"></d:CreatedOn>
+            <d:CreatedById m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:CreatedById>
+            <d:ModifiedOn m:type="Edm.DateTime"></d:ModifiedOn>
+            <d:ModifiedById m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:ModifiedById>
+            <d:ProcessListeners m:type="Edm.Int32">0</d:ProcessListeners>
+            <d:Dear></d:Dear>
+            <d:SalutationTypeId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:SalutationTypeId>
+            <d:GenderId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:GenderId>
+            <d:AccountId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:AccountId>
+            <d:DecisionRoleId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:DecisionRoleId>
+            <d:TypeId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:TypeId>
+            <d:JobId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:JobId>
+            <d:JobTitle></d:JobTitle>
+            <d:DepartmentId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:DepartmentId>
+            <d:BirthDate m:type="Edm.DateTime">0001-01-01T00:00:00</d:BirthDate>
+            <d:Phone></d:Phone>
+            <d:MobilePhone></d:MobilePhone>
+            <d:HomePhone></d:HomePhone>
+            <d:Skype></d:Skype>
+            <d:Email></d:Email>
+            <d:AddressTypeId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:AddressTypeId>
+            <d:Address>ул.</d:Address>
+            <d:CityId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:CityId>
+            <d:RegionId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:RegionId>
+            <d:Zip></d:Zip>
+            <d:CountryId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:CountryId>
+            <d:DoNotUseEmail m:type="Edm.Boolean">false</d:DoNotUseEmail>
+            <d:DoNotUseCall m:type="Edm.Boolean">false</d:DoNotUseCall>
+            <d:DoNotUseFax m:type="Edm.Boolean">false</d:DoNotUseFax>
+            <d:DoNotUseSms m:type="Edm.Boolean">false</d:DoNotUseSms>
+            <d:DoNotUseMail m:type="Edm.Boolean">false</d:DoNotUseMail>
+            <d:Notes></d:Notes>
+            <d:Facebook></d:Facebook>
+            <d:LinkedIn></d:LinkedIn>
+            <d:Twitter></d:Twitter>
+            <d:FacebookId></d:FacebookId>
+            <d:LinkedInId></d:LinkedInId>
+            <d:TwitterId></d:TwitterId>
+            <d:TwitterAFDAId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:TwitterAFDAId>
+            <d:FacebookAFDAId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:FacebookAFDAId>
+            <d:LinkedInAFDAId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:LinkedInAFDAId>
+            <d:GPSN></d:GPSN>
+            <d:GPSE></d:GPSE>
+            <d:Surname></d:Surname>
+            <d:GivenName>неизвестно</d:GivenName>
+            <d:MiddleName></d:MiddleName>
+            <d:Confirmed m:type="Edm.Boolean">true</d:Confirmed>
+            <d:LanguageId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:LanguageId>
+            <d:Completeness m:type="Edm.Int32">0</d:Completeness>
+            <d:UsrCallCentreId m:type="Edm.Guid">00000000-0000-0000-0000-000000000000</d:UsrCallCentreId>
+        </m:properties>
+    </content>
+</feed>
