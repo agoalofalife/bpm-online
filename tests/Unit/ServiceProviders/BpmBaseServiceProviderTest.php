@@ -31,7 +31,7 @@ class BpmBaseServiceProviderTest extends TestCase
 
     public function test_boot()
     {
-        PHPMockery::mock('agoalofalife\bpm\ServiceProviders', "config_path")->once();
+        PHPMockery::mock('agoalofalife\bpm\ServiceProviders', "config_path")->once()->with('apiBpm.php');
         $this->providers->boot();
         \Mockery::close();
     }
