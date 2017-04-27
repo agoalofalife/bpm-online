@@ -204,7 +204,7 @@ $handler = $kernel->action('delete:xml', function ($creator){
 <a name="Laravel"></a>
 ## Интеграция с Laravel
 
-Для интеграции с фреймворком Laravel необходимо скопировать конфигурации
+Для интеграции с фреймворком Laravel необходимо скопировать конфигурации и заполнить их
 
 ```
  php artisan vendor:publish --tag=bpm --force
