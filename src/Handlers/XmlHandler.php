@@ -72,7 +72,7 @@ class XmlHandler implements Handler, Collection
      */
     public function getContentType()
     {
-        return 'application/atom+xml;type=entry';
+        return '';
     }
 
     /**
