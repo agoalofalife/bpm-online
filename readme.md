@@ -51,7 +51,7 @@
  $kernel->loadConfiguration($file);
 ```
 
-Файл должен возвращать массив с
+Файл должен возвращать массив с конфигурационными данными 
 ```
 return [
 	// url для аутентификации
@@ -325,7 +325,7 @@ $kernel->setConfigManually('apiBpm', [
 <a name="Authentication_en"></a>
 ## Authentication
 
-For authentication in **BPM API **, it is necessary to get cookie in URL
+For authentication in BPM API , it is necessary to get cookie in URL
 
 `https://ikratkoe.bpmonline.com/ServiceModel/AuthService.svc/Login`
 It is necessary to call the method `authentication`
@@ -480,14 +480,14 @@ Insert the service provider to a file `config/app.php`
 ```
  Then you can use extract the object from the container.
  
-    ```
+```
     $bpm =  app('bpm');
     $bpm->setCollection('CaseCollection');
 
      $handler = $bpm->action('read:xml', function ($read){
         $read->amount(1);
     })->get();
-    ```
+```
 
  
 Or by using the Facade , registering it in a file`config/app.php`:
