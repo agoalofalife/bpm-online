@@ -17,7 +17,7 @@ class BpmBaseServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../../config/apiBpm.php' => config_path('apiBpm.php')
-        ]);
+        ], 'bpm');
     }
 
     /**
