@@ -19,13 +19,13 @@
         "illuminate/config": "5.4.*",
         "guzzlehttp/guzzle": "~6.0",
         "symfony/var-dumper": "^3.2",
-        "akamon/mockery-callable-mock": "dev-master",
         "monolog/monolog": "1.*"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.6",
         "mockery/mockery": "^0.9.9",
-        "phpunit/phpunit": "5.7.*"
+        "phpunit/phpunit": "5.7.*",
+        "php-mock/php-mock-mockery": "dev-master"
     },
     "autoload": {
         "psr-4": {
