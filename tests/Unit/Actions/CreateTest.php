@@ -9,6 +9,11 @@ use agoalofalife\bpm\KernelBpm;
 use agoalofalife\Tests\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Config\Repository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -68,7 +73,6 @@ class CreateTest extends TestCase
         $curl->shouldReceive('request')->once()->andReturn($response);
         $response->shouldReceive('getBody')->once()->andReturn($stream);
         $stream->shouldReceive('getContents')->once()->andReturn('');
-
 
         $this->creator->processData();
     }

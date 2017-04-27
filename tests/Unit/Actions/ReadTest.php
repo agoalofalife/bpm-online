@@ -5,12 +5,15 @@ namespace agoalofalife\Tests\Actions;
 
 use agoalofalife\bpm\Actions\Read;
 use agoalofalife\bpm\Contracts\Action;
+use agoalofalife\bpm\Handlers\XmlHandler;
 use agoalofalife\bpm\KernelBpm;
 use agoalofalife\Tests\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Config\Repository;
 use InvalidArgumentException;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 
 class ReadTest extends TestCase

@@ -7,6 +7,12 @@ use agoalofalife\bpm\Assistants\QueryBuilder;
 use agoalofalife\bpm\Contracts\Authentication;
 use agoalofalife\bpm\KernelBpm;
 use agoalofalife\Tests\TestCase;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\TransferStats;
 use Monolog\Logger;
 
@@ -67,4 +73,20 @@ class QueryBuilderTest extends TestCase
         $this->assertEquals($this->parameters, $this->get());
     }
 
+    public function test_debug_in_process()
+  {
+      $logger = $this->mock(Logger::class);
+      app()->instance(Logger::class, $logger);
+      $logger->shouldReceive('debug')->once();
+
+      $mock = new MockHandler([
+          new Response(200, ['X-Foo' => 'Bar']),
+          new Response(202, ['Content-Length' => 0]),
+          new RequestException("Error Communicating with Server", new Request('GET', 'test'))
+      ]);
+
+      $handler = HandlerStack::create($mock);
+      $client = new Client(['handler' => $handler]);
+      $client->request('GET', $this->faker()->url, $this->debug()->get());
+  }
 }

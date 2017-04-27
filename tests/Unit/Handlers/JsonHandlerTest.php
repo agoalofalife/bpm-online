@@ -9,6 +9,8 @@ class JsonHandlerTest extends TestCase
 {
     protected $jsonHandler;
     protected $templateValid = '{"d" : {  "results" : { "test" : "test" }}}';
+    protected $templateRecValid = '{"d" : {  "results" : [{ "test" : "test" }, { "test" : "test" }, {"testing" : {"testing" : "blabla"}}] }}';
+    protected $emptyJson = '{"d" : {  "results" : {"just" : {"test" : [{"test":"test"}]}}}}';
     public function setUp()
     {
         parent::setUp();
@@ -49,8 +51,10 @@ class JsonHandlerTest extends TestCase
 
     public function test_toArray()
     {
-        $this->jsonHandler->parse($this->templateValid);
-        $this->assertEquals(["test" => "test"], $this->jsonHandler->toArray());
+        $this->jsonHandler->parse($this->templateRecValid);
+        $this->assertEquals([["test" => "test"], ["test" => "test"], ["testing" => ["testing" => "blabla"]]], $this->jsonHandler->toArray());
+        $this->jsonHandler->parse(file_get_contents(__DIR__.'/../../fakeFile/fake.json'));
+        $this->assertInternalType('array',  $this->jsonHandler->toArray());
     }
 
     public function test_toJson()

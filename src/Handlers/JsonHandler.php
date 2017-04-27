@@ -91,9 +91,11 @@ class JsonHandler implements Handler, Collection
                if (gettype($value) != 'object')
                {
                    $result[$key] = $value;
-               } else{
-                   $result[$key] = get_object_vars($value);
                }
+               // TODO not smog to find a similar case
+             /*  else{
+                   $result[$key] = get_object_vars($value);
+               }*/
 
             }
         }

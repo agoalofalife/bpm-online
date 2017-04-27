@@ -1,6 +1,7 @@
 <?php
 namespace agoalofalife\bpm\Actions;
 
+use agoalofalife\bpm\Assistants\AuthenticationHelper;
 use agoalofalife\bpm\Assistants\ConstructorUrl;
 use agoalofalife\bpm\Assistants\QueryBuilder;
 use agoalofalife\bpm\Contracts\Action;
@@ -18,7 +19,7 @@ use agoalofalife\bpm\KernelBpm;
  */
 class Update implements Action, ActionGet, ActionSet
 {
-    use ConstructorUrl, QueryBuilder;
+    use ConstructorUrl, QueryBuilder, AuthenticationHelper;
 
     protected $url = '?';
 
@@ -88,12 +89,7 @@ class Update implements Action, ActionGet, ActionSet
         $body       = $response->getBody();
 
         $this->kernel->getHandler()->parse($body->getContents());
-
-        if ( $response->getStatusCode() == 401 && $response->getReasonPhrase() == 'Unauthorized' )
-        {
-            $this->kernel->authentication();
-            $this->query();
-        }
+        $this->checkResponseUnauthorized($response);
     }
 
 }

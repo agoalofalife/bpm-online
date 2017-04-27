@@ -19,9 +19,11 @@ trait XmlConverter
             } else {
                 if ($val instanceof SimpleXMLElement) {
                     $xml[$key] = $this->xmlToArray($val);
-                } elseif (empty($val)) {
-                    $xml[$key] = null;
                 }
+                // TODO not smog to find a similar case
+//                elseif (empty($val)) {
+//                    $xml[$key] = null;
+//                }
             }
 
         }
@@ -39,9 +41,11 @@ trait XmlConverter
         foreach ($xml as $key=>$val) {
             if ($val instanceof SimpleXMLElement) {
                 $xml[$key] = $this->xmlToArray($val);
-            } elseif (empty($val)) {
-                $xml[$key] = null;
             }
+            // TODO not smog to find a similar case
+//            elseif (empty($val)) {
+//                $xml[$key] = null;
+//            }
         }
 
         return $xml;

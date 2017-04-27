@@ -9,6 +9,7 @@ use SimpleXMLElement;
 class XmlConverterTest extends TestCase
 {
     use XmlConverter;
+
     public function setUp()
     {
         parent::setUp();
@@ -16,8 +17,39 @@ class XmlConverterTest extends TestCase
 
     public function test_xmlToArray()
     {
-        $xml = new SimpleXMLElement('<parent><one>test</one></parent>');
-        $this->assertEquals(["one" => "test"], $this->xmlToArray($xml));
+
+        $xml = new SimpleXMLElement('<entry>
+                                <parent><one>test</one><two></two><three>test</three><four>test</four></parent>
+                                <parent><one>test</one><two>test</two><three>test</three><four>test</four></parent>
+                                <parent><one>test</one><two>test</two><three>test</three><four>test</four></parent>
+                                 </entry>');
+
+        $arrayEquals =  ["parent" => [
+        [
+        "one"  => "test",
+        "two"  => null,
+        "three"=> "test",
+        "four" => "test",
+       ],
+      [
+       "one" => "test",
+      "two"   => "test",
+      "three" => "test",
+      "four"  => "test"
+    ],
+     [
+      "one"   => "test",
+      "two"   => "test",
+      "three" => "test",
+      "four"  => "test",
+    ]
+  ]
+];
+        $testEmpty = ['test'=> null];
+        $this->assertEquals($testEmpty, $this->xmlToArrayRecursive($testEmpty));
+        $this->assertEquals($testEmpty, $this->xmlToArray($testEmpty));
+        $this->assertEquals($arrayEquals, $this->xmlToArrayRecursive($arrayEquals));
+        $this->assertEquals($arrayEquals, $this->xmlToArrayRecursive($xml));
         $this->assertNull($this->xmlToArray(null));
     }
 

@@ -9,7 +9,7 @@ use agoalofalife\Tests\TestCase;
 class CookieAuthenticationTest extends TestCase
 {
     protected $authClass;
-
+    protected $pathCookieFileFake   = __DIR__ . '/../../../tests/fakeFile/cookie.txt';
     public function setUp()
     {
         parent::setUp();
@@ -49,6 +49,14 @@ class CookieAuthenticationTest extends TestCase
 
     public function test_getCsrf()
     {
+        $this->authClass->setPathCookieFile($this->pathCookieFileFake);
+        $this->assertEquals('123456', $this->authClass->getCsrf());
         $this->assertInternalType('string', $this->authClass->getCsrf());
+    }
+
+    public function test_getCsrf_without_text()
+    {
+        $this->authClass->setPathCookieFile('');
+        $this->assertEquals('', $this->authClass->getCsrf());
     }
 }

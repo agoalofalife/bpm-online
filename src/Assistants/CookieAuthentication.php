@@ -23,6 +23,11 @@ class CookieAuthentication implements Authentication
         return $this->pathToCookieFile;
     }
 
+    public function setPathCookieFile($path)
+    {
+        $this->pathToCookieFile = $path;
+    }
+
     /**
      * Getting the cookie and write it to a file
      * @return boolean

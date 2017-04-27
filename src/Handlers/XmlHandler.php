@@ -167,15 +167,11 @@ class XmlHandler implements Handler, Collection
      */
     private function arrayMany()
     {
-        try {
             foreach ($this->response->children( $this->namespaces['NamespaceAtom'] )->entry as $item ) {
                 $this->validText[] =   $item->content->children( $this->namespaces['NamespaceMetadata'] )
                     ->children($this->namespaces['NamespaceDataServices']);
             }
             return $this;
-        } catch (\Exception $e) {
-            dd($this->responceXML);
-        }
     }
     /**
      *  Get one Element

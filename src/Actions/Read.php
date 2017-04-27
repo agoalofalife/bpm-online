@@ -1,6 +1,7 @@
 <?php
 namespace agoalofalife\bpm\Actions;
 
+use agoalofalife\bpm\Assistants\AuthenticationHelper;
 use agoalofalife\bpm\Assistants\ConstructorUrl;
 use agoalofalife\bpm\Assistants\QueryBuilder;
 use agoalofalife\bpm\Contracts\Action;
@@ -20,7 +21,7 @@ use Assert\Assert;
  */
 class Read implements Action, ActionGet
 {
-    use ConstructorUrl, QueryBuilder;
+    use ConstructorUrl, QueryBuilder, AuthenticationHelper;
 
     protected $kernel;
 
@@ -154,10 +155,6 @@ class Read implements Action, ActionGet
 
         $this->kernel->getHandler()->parse($body->getContents());
 
-        if ( $response->getStatusCode() == 401 && $response->getReasonPhrase() == 'Unauthorized' )
-        {
-            $this->kernel->authentication();
-            $this->query();
-        }
+        $this->checkResponseUnauthorized($response);
     }
 }
