@@ -21,6 +21,7 @@
     - [Delete](#Delete)
 - [Обработчики  ответов](#Handler)
 - [Логирование](#Log)
+- [Интеграция с Laravel](#Laravel)
 
 
 
@@ -199,3 +200,44 @@ $handler = $kernel->action('delete:xml', function ($creator){
 
 На данный момент пакет сохраняет внутри себя детализацию всех запросов с сортировкой по дате.
 Их можно найти в `src/resource/logs/...`
+
+<a name="Laravel"></a>
+## Интеграция с Laravel
+
+Для интеграции с фреймворком Laravel необходимо скопировать конфигурации
+
+```
+ php artisan vendor:publish --tag=bpm --force
+```
+Вставить сервис провайдер в файл `config/app.php`
+
+```
+ \agoalofalife\bpm\ServiceProviders\BpmBaseServiceProvider::class,
+ ```
+ 
+ Далее можно пользоваться извлекая обьект из контейнера 
+ 
+ ```
+    $bpm =  app('bpm');
+    $bpm->setCollection('CaseCollection');
+
+     $handler = $bpm->action('read:xml', function ($read){
+        $read->amount(1);
+    })->get();
+ ```
+ 
+ Либо используя фасад , предварительно зарегистрировав его в файле `config/app.php`:
+ ```
+   'aliases' => [
+ Illuminate\Support\Facades\Facade\Bpm
+  ... 
+  ]
+  ```
+  Клиентский код
+ ```
+    Bpm::setCollection('CaseCollection');
+     $handler = Bpm::action('read:xml', function ($read){
+        $read->amount(1);
+    })->get();
+ ```
+ 
