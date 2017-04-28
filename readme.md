@@ -3,8 +3,9 @@
 
 ### API BPM ONLINE
 
+[RU](#RU) | [EN](#EN)
 
-
+<a name="RU"></a>
 **Что это такое?**
 
 
@@ -50,7 +51,7 @@
  $kernel->loadConfiguration($file);
 ```
 
-Файл должен возвращать массив с
+Файл должен возвращать массив с конфигурационными данными 
 ```
 return [
 	// url для аутентификации
@@ -212,32 +213,297 @@ $handler = $kernel->action('delete:xml', function ($creator){
 Вставить сервис провайдер в файл `config/app.php`
 
 ```
- \agoalofalife\bpm\ServiceProviders\BpmBaseServiceProvider::class,
- ```
+ \agoalofalife\bpm\ServiceProviders\BpmBaseServiceProvider::class
+```
  
  Далее можно пользоваться извлекая обьект из контейнера 
  
- ```
+ 
     $bpm =  app('bpm');
     $bpm->setCollection('CaseCollection');
 
      $handler = $bpm->action('read:xml', function ($read){
         $read->amount(1);
     })->get();
- ```
+ 
  
  Либо используя фасад , предварительно зарегистрировав его в файле `config/app.php`:
- ```
+ 
+```
    'aliases' => [
  Illuminate\Support\Facades\Facade\Bpm
   ... 
   ]
-  ```
+```
+
+
   Клиентский код
- ```
+
+```
+
     Bpm::setCollection('CaseCollection');
      $handler = Bpm::action('read:xml', function ($read){
         $read->amount(1);
     })->get();
- ```
+```
+
+
+ <a name="EN"></a>
+
+
+**What is it ?**
+
+The package provides a convenient interface to work with [API Terrasoft](https://academy.terrasoft.ru/documents/technic-sdk/7-8/rabota-s-obektami-bpmonline-po-protokolu-odata-s-ispolzovaniem-http-zaprosov) through the Protocol
+
+- [Install](#Installation_en)
+- [Configurations](#Config_en)
+- [Authentication](#Authentication_en)
+- [Set Collection](#SetCollection_en)
+- [Base Request](#BasesRequest_en)
+    - [Select](#Select_en)
+    - [Create](#Create_en)
+    - [Update](#Update_en)
+    - [Delete](#Delete_en)
+- [Handler Response](#Handler_en)
+- [Log](#Log_en)
+- [Integration with Laravel](#Laravel_en)
+
+<a name="Installation_en"></a>
+## Install
+
+For installation, you must run the command from composer
+
+    
+    composer require agoalofalife/bpm-online
+<a name="Config_en"></a>
+
+## Configurations
+
+To install your configuration data there are several ways :
+
+ - class File
  
+```
+ //Init  kernel
+ $kernel = new KernelBpm();
+ $file = new File();
+ 
+ // specify the path to the file with the configurations
+ $file->setSource(__DIR__ . '/config/apiBpm.php');
+ // loading...
+ $kernel->loadConfiguration($file);
+```
+
+
+The file must return an array with the data
+```
+return [
+	// url for auth
+    'UrlLogin' => '',
+    //our url for request api       
+    'UrlHome'  => '',
+    'Login'    => '',
+    'Password' => ''
+    ]
+```
+
+
+ - through method setConfigManually in KernelBpm
+
+```
+$kernel = new KernelBpm();
+// the first parameter is passed a prefix for configuration
+$kernel->setConfigManually('apiBpm', [
+        'UrlLogin' => '',
+        'Login'    => '',
+        'Password' => '',
+        'UrlHome'  => ''
+]);
+```
+
+
+<a name="Authentication_en"></a>
+## Authentication
+
+For authentication in BPM API , it is necessary to get cookie in URL
+
+`https://ikratkoe.bpmonline.com/ServiceModel/AuthService.svc/Login`
+It is necessary to call the method `authentication`
+
+
+```
+$kernel->authentication();
+```
+
+You can not call it and the package will automatically update the cookies by making an additional query.
+
+<a name="SetCollection_en"></a>
+
+## Set Collection
+
+In **BPM**  all tables of the database are referred to as collections  ( Collections )
+To communicate, you must install the collection.
+
+```
+$kernel->setCollection('CaseCollection');
+```
+
+This approach has an additional disadvantage in the method call `setCollection`,  but reuse installation of the collection.
+Meaning that we can install a collection and perform operations on it.
+
+<a name="BasesRequest_en"></a>
+
+<a name="Select_en"></a>
+
+
+## Select
+
+All methods take the first parameter of the string type and the data type, 
+the second parameter `callback`  inside of which is passed the type of operation, inside `callback`  executed all pre - settings at the end method is called `get`.
+
+Returns the object type Handler which handler response from BPM.
+
+```
+$handler = $kernel->action('read:json', function ($read){
+    $read->amount(1)->skip(100);
+
+})->get();
+
+```
+
+Only two types of data `xml` and `json`.
+Four types of operations `read`, `create`, `update`, `delete`.
+
+**Methods Select**
+
+**filterConstructor** 
+
+Allows you to filter the selection using the function $filter  in request
+```
+filterConstructor('Id eq guid\'00000000-0000-0000-0000-000000000000\'')->run();
+```
+
+**orderBy** 
+To retrieve data in sorted form
+The first parameter the field name, the second argument to sort :
+ascending (asc)
+descending (desc)
+```
+->orderby('Number', 'desc')
+```
+
+**skip** 
+
+If you want to skip the specified number of records
+
+```
+->skip(10)
+```
+
+**amount**
+To set the maximum number of records
+
+```
+->amount(100)
+```
+`Keep in mind that you can combine the methods according to the documentation
+Terrasoft`
+
+<a name="Create_en"></a>
+## Create
+
+The syntax for creating a record is the same as Select.
+Inside  `callback` you must call setData and  pass his array parameters for creating record in  table BPM.
+
+```
+$handler = $kernel->action('create:xml', function ($creator){
+    $creator->setData([
+        // array key => value
+    ]);
+})->get();
+```
+<a name="Update_en"></a>
+
+## Update
+To update the data in the record BPM you need to know guid record.
+This set guid and new  parameters for updates.
+```
+$handler = $kernel->action('update:json', function ($creator){
+    $creator->guid('')->setData([
+       'Number' => ''
+    ]);
+})->get();
+```
+
+<a name="Delete"></a>
+## Delete
+
+For deleting a record from DB enough to know guid and only guid
+```
+$handler = $kernel->action('delete:xml', function ($creator){
+    $creator->guid('');
+})->get();
+```
+
+<a name="Handler_en"></a>
+## Handler Response
+
+Regardless of the operation always returns a typeп  Handler,  which has several methods to convert the data.
+
+**toArray**
+Converts the data into an array
+
+**toJson**
+Converts the data to json
+
+**getData**
+Just Return the data
+
+<a name="Log_en"></a>
+## Log
+
+At the moment, the package keeps a detail of all queries sorted by date.
+You can find them in `src/resource/logs/...`
+
+<a name="Laravel_en"></a>
+## Integration with Laravel
+
+For integration with the framework Laravel you must copy the configuration and fill them
+
+```
+ php artisan vendor:publish --tag=bpm --force
+```
+Insert the service provider to a file `config/app.php`
+
+```
+ \agoalofalife\bpm\ServiceProviders\BpmBaseServiceProvider::class,
+```
+ Then you can use extract the object from the container.
+ 
+```
+    $bpm =  app('bpm');
+    $bpm->setCollection('CaseCollection');
+
+     $handler = $bpm->action('read:xml', function ($read){
+        $read->amount(1);
+    })->get();
+```
+
+ 
+Or by using the Facade , registering it in a file`config/app.php`:
+ 
+```
+   'aliases' => [
+ Illuminate\Support\Facades\Facade\Bpm
+  ... 
+  ]
+```
+
+  Client code
+  
+```
+    Bpm::setCollection('CaseCollection');
+     $handler = Bpm::action('read:xml', function ($read){
+        $read->amount(1);
+    })->get();
+```
