@@ -123,7 +123,7 @@ $handler = $kernel->action('read:json', function ($read){
 **filterConstructor** 
 Позволяет фильтровать выборку с помощью функции $filter  в запросе
 ```
-filterConstructor('Id eq guid\'00000000-0000-0000-0000-000000000000\'')->run();
+filterConstructor('Id eq guid\'00000000-0000-0000-0000-000000000000\'');
 ```
 **orderBy** 
 Получать данные в отсортированном виде
@@ -380,7 +380,7 @@ Four types of operations `read`, `create`, `update`, `delete`.
 
 Allows you to filter the selection using the function $filter  in request
 ```
-filterConstructor('Id eq guid\'00000000-0000-0000-0000-000000000000\'')->run();
+filterConstructor('Id eq guid\'00000000-0000-0000-0000-000000000000\'');
 ```
 
 **orderBy** 
