@@ -21,7 +21,10 @@ trait ConstructorUrl
             $this->url .= $newParameters;
         } elseif ($this->url == '') {
             $this->url .= $newParameters;
-        } else {
+        } elseif ($this->url == '/') {
+            $this->url .= $newParameters;
+        }
+        else {
             $this->url .= '&'.$newParameters;
         }
         return $this;

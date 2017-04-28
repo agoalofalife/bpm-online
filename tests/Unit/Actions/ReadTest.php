@@ -74,6 +74,15 @@ class ReadTest extends TestCase
         $this->action->skip('string');
     }
 
+    public function test_count()
+    {
+        $this->action->count();
+        $this->assertEquals('/$count',  $this->action->getUrl());
+
+        $this->action->filterConstructor('Id eq guid\'00000000-0000-0000-0000-000000000000\'');
+        $this->assertEquals('/$count&$filter=Id eq guid\'00000000-0000-0000-0000-000000000000\'',  $this->action->getUrl());
+
+    }
     public function test_skip()
     {
         $this->action->skip(10);

@@ -139,6 +139,19 @@ class Read implements Action, ActionGet
     }
 
     /**
+     * The number of records
+     * example SomeCollection/$count or SomeCollection/$count?$filter=...
+     * @return $this
+     */
+    public function count()
+    {
+        $this->url = '/';
+        $ParameterQuery = '$count';
+        $this->concatenationUrlCurl($ParameterQuery);
+        return $this;
+    }
+
+    /**
      * TODO Requires refactoring of this method
      * @return void
      */
@@ -148,7 +161,7 @@ class Read implements Action, ActionGet
         $url          = $this->kernel->getCollection() . $parameters;
         $urlHome      = config($this->kernel->getPrefixConfig() . '.UrlHome');
 
-        $response     = $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
+        $response     =  $this->kernel->getCurl()->request($this->HTTP_TYPE, $urlHome . $url,
                          $this->debug()->headers()->getCookie()->httpErrorsFalse()->get()
         );
         $body         = $response->getBody();
