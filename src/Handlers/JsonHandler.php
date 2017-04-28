@@ -18,6 +18,7 @@ class JsonHandler implements Handler, Collection
     private $jsonPrefix     = 'd';
     private $jsonPrefixWord = 'results';
     private $validText      = [];
+    private $jsonPrefixAllCollection = 'EntitySets';
 
     public function getAccept()
     {
@@ -37,8 +38,23 @@ class JsonHandler implements Handler, Collection
         }
 
         $this->response = $parse;
-        $this->validText = json_decode($parse)->{$this->jsonPrefix}->{$this->jsonPrefixWord};
+        $this->validText = $this->chooseJsonPrefix($parse);
         return $this;
+    }
+
+    /**
+     * @param $parse string json
+     * @return mixed
+     */
+    private function chooseJsonPrefix($parse)
+    {
+        $decode = json_decode($parse);
+        if ( isset($decode->{$this->jsonPrefix}->{$this->jsonPrefixWord}) )
+        {
+            return $decode->{$this->jsonPrefix}->{$this->jsonPrefixWord};
+        } else {
+            return $decode->{$this->jsonPrefix}->{$this->jsonPrefixAllCollection};
+        }
     }
 
     /**

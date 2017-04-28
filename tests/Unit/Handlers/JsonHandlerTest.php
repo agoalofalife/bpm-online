@@ -9,6 +9,7 @@ class JsonHandlerTest extends TestCase
 {
     protected $jsonHandler;
     protected $templateValid = '{"d" : {  "results" : { "test" : "test" }}}';
+    protected $templateValidAllCollection =  '{"d" : {  "EntitySets" : { "test" : "test" }}}';
     protected $templateRecValid = '{"d" : {  "results" : [{ "test" : "test" }, { "test" : "test" }, {"testing" : {"testing" : "blabla"}}] }}';
     protected $emptyJson = '{"d" : {  "results" : {"just" : {"test" : [{"test":"test"}]}}}}';
     public function setUp()
@@ -33,12 +34,17 @@ class JsonHandlerTest extends TestCase
         $this->assertEquals([], $empty);
     }
 
-    public function test_parse()
+    public function test_parse_base()
     {
         $empty = $this->jsonHandler->parse($this->templateValid);
         $this->assertInstanceOf(JsonHandler::class, $empty);
     }
 
+    public function test_parse_all_collection()
+    {
+        $empty = $this->jsonHandler->parse($this->templateValidAllCollection);
+        $this->assertInstanceOf(JsonHandler::class, $empty);
+    }
     public function test_checkIntegrity_true()
     {
         $this->assertTrue($this->jsonHandler->checkIntegrity($this->templateValid));
