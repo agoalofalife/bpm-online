@@ -16,43 +16,19 @@
           </div>
           <div class="block">
             <div class="control is-horizontal">
-              <div class="control-label">
-                <label class="label">Symbol</label>
-              </div>
-              <!--<div class="control">-->
-                <!--<div class="select is-fullwidth">-->
-                  <!--<select v-model="params.symbol">-->
-                    <!--<option v-for="s in symbols" :value="s">{{s}}</option>-->
-                  <!--</select>-->
-                <!--</div>-->
-              <!--</div>-->
-            </div>
-            <!--<div class="control is-horizontal">-->
-              <!--<div class="control-label">-->
-                <!--<label class="label">Days</label>-->
-              <!--</div>-->
-              <!--<div class="control is-fullwidth">-->
-                <!--<input class="input" min="0" max="720" type="number" v-model="params.numberOfDays">-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class="control is-horizontal">-->
-              <!--<div class="control-label">-->
-                <!--<label class="label">Period</label>-->
-              <!--</div>-->
-              <!--<div class="control">-->
-                <!--<div class="select is-fullwidth">-->
-                  <!--<select v-model="params.dataPeriod">-->
-                    <!--<option v-for="p in periods" :value="p">{{p}}</option>-->
-                  <!--</select>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-            <div class="control is-horizontal">
-              <!--<div class="control-label">-->
-                <!--<label class="label"></label>-->
-              <!--</div>-->
+
               <div class="control">
-                <button class="button is-primary" :class="{'is-loading': isloading}" @click="loadData">Get</button>
+                <div class="select is-fullwidth col-md-4">
+                  <select class="form-control">
+                    <option  v-for="date in dateFilter">{{ date }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="control is-horizontal">
+              <div class="control">
+                <button type="submit" class="btn btn-primary" :class="{'is-loading': isloading}" @click="loadData">Get</button>
               </div>
             </div>
           </div>
@@ -72,6 +48,7 @@
         },
         data () {
             return {
+                dateFilter : [],
                 error : false,
                 notRequest:'(Unfortunately you have no requests ...)',
                 params: {
@@ -111,13 +88,23 @@
                         pointBorderWidth: 1
                     }]
                 }
+            },
+            dateFilter() {
+                this.$http({
+                    url: '/api/listDates',
+                }).then((response) => {
+                    let dates = JSON.parse(response.data).date
+                    this.error = false
+                }).catch((error) => {
+                    this.error = true
+                })
             }
         },
         methods: {
             loadData () {
-                this.isloading = true
+                this.isloading      = true
                 this.labels.length = 0
-                this.data.length = 0
+                this.data.length   = 0
 
                 this.$http({
                     url: api,
