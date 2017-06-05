@@ -19,7 +19,7 @@
 
               <div class="control">
                 <div class="select is-fullwidth col-md-4">
-                  <select class="form-control">
+                  <select class="form-control" v-model="selectDate">
                     <option  value="" disabled selected>Select one of the options</option>
                     <option  v-for="date in dateFilter">{{ date }}</option>
                   </select>
@@ -49,6 +49,7 @@
         },
         data () {
             return {
+                selectDate : null,
                 dateFilter : [],
                 error : false,
                 notRequest:'(Unfortunately you have no requests ...)',
@@ -69,22 +70,6 @@
                 }
             }
         },
-        asyncData() {
-            console.log( '?A' );
-            return this.$http({
-                url: '/api/listDates',
-            }).then((response) => {
-                this.error = false
-                console.log( 'response' );
-                return {
-                    dateFilter : JSON.parse(response.data).date
-                }
-
-//                this.dateFilter = JSON.parse(response.data).date
-            }).catch((error) => {
-                this.error = true
-            })
-        },
         computed: {
             stockData () {
                 return {
@@ -101,7 +86,17 @@
             },
         },
         methods: {
-            loadData () {
+            fetchDate(){
+                return this.$http({
+                    url: '/api/listDates',
+                }).then((response) => {
+                this.error = false
+                this.dateFilter = JSON.parse(response.data).date
+                }).catch((error) => {
+                    this.error = true
+                })
+            },
+            fetchStatic(){
                 this.isloading      = true
                 this.labels.length = 0
                 this.data.length   = 0
@@ -118,17 +113,26 @@
                 }).catch((error) => {
                     this.error = true
                 })
-
-//                  this.$http({
-//                    url: '/api/listDates',
-//                }).then((response) => {
-//                    this.dateFilter = JSON.parse(response.data).date
-//                    this.error = false
-//                }).catch((error) => {
-//                    this.error = true
-//                })
+            },
+            loadData () {
+                 this.$http.post('/api/filterDates', {
+                    date : this.selectDate
+                }).then((response) => {
+                     let dates = JSON.parse(response.data).date
+                     let price = JSON.parse(response.data).durations
+                     this.data.push(...price)
+                     this.labels.push(...dates)
+                     this.isloading = false
+                     this.error = false
+                }).catch((error) => {
+                    this.error = true
+                })
             }
-        }
+        },
+        created: function() {
+            this.fetchDate()
+            this.fetchStatic()
+        },
     }
 </script>
 
