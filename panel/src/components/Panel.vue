@@ -89,16 +89,6 @@
                     }]
                 }
             },
-            dateFilter() {
-                this.$http({
-                    url: '/api/listDates',
-                }).then((response) => {
-                    let dates = JSON.parse(response.data).date
-                    this.error = false
-                }).catch((error) => {
-                    this.error = true
-                })
-            }
         },
         methods: {
             loadData () {
@@ -114,6 +104,15 @@
                     this.data.push(...price)
                     this.labels.push(...dates)
                     this.isloading = false
+                    this.error = false
+                }).catch((error) => {
+                    this.error = true
+                })
+
+                  this.$http({
+                    url: '/api/listDates',
+                }).then((response) => {
+                    this.dateFilter = JSON.parse(response.data).date
                     this.error = false
                 }).catch((error) => {
                     this.error = true

@@ -13,6 +13,7 @@
     "test": "npm run unit && npm run e2e"
   },
   "dependencies": {
+    "body-parser": "^1.17.2",
     "install": "^0.10.1",
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.5",

@@ -1,5 +1,6 @@
 fs = require('fs')
 sup = require('../support/array')
+var bodyParser = require('body-parser')
 
 var dir                  = '../src/resource/logs/'
 // var dir                  = '../../src/resource/logs/'
@@ -9,7 +10,42 @@ var onlyDate             = /[0-9]{4}-[0-9]{2}-[0-9]{2}/g
 var result               = []
 
 
-function statRequestHandler(req, res) {
+function getDataToFilterDate(req, res, filterData) {
+    var dateList = []
+    var durationList  = []
+
+    if (fileExist) {
+        files = fs.readdirSync(dir)
+        if (files.length == 0 ){
+            return res.status(500).json( 'while there is no logs files' )
+        }
+        files.forEach(function(file) {
+            var strFromFile         = fs.readFileSync(dir + file, {encoding: 'utf-8'})
+            strFromFile.split('\n').forEach(function (stringLine) {
+
+                if (  new RegExp(filterData).test(stringLine) ) {
+                    dateList            = dateList.concat(stringLine.match(regexDate))
+                    durationList        = durationList.concat(getListDurationRequest(stringLine))
+                }
+            })
+        })
+        if (dateList.length != durationList.length) {
+            res.json('does not match the number')
+        } else {
+            res.json( JSON.stringify({
+                date      : dateList,
+                durations : durationList
+
+            }))
+        }
+    }else{
+        res.status(500).json( 'while there is no logs files' )
+    }
+}
+function statRequestHandler(req, res, filterData) {
+        var dateList = []
+        var durationList  = []
+
         if (fileExist) {
             files = fs.readdirSync(dir)
             if (files.length == 0 ){
@@ -17,19 +53,18 @@ function statRequestHandler(req, res) {
             }
             files.forEach(function(file) {
                 var strFromFile         = fs.readFileSync(dir + file, {encoding: 'utf-8'})
-                var dateList     = strFromFile.match(regexDate)
-                var durationList = getListDurationRequest(strFromFile)
-
-                if (dateList.length != durationList.length) {
-                    res.json('does not match the number')
-                } else {
-                    res.json( JSON.stringify({
-                        date      : dateList,
-                        durations : durationList
-
-                    }))
-                }
+                    dateList            = dateList.concat(strFromFile.match(regexDate))
+                    durationList        = durationList.concat(getListDurationRequest(strFromFile))
             })
+            if (dateList.length != durationList.length) {
+                res.json('does not match the number')
+            } else {
+                res.json( JSON.stringify({
+                    date      : dateList,
+                    durations : durationList
+
+                }))
+            }
         }else{
             res.status(500).json( 'while there is no logs files' )
         }
@@ -53,6 +88,8 @@ function getListDates(req, res) {
 
 
 function initRouter(app) {
+    app.use(bodyParser.json())
+    app.use(bodyParser.urlencoded({ extended: true }))
 
     app.get('/api/statistic-request', function(req, res) {
        return statRequestHandler(req, res)
@@ -60,6 +97,10 @@ function initRouter(app) {
 
     app.get('/api/listDates', function(req, res) {
         return getListDates(req, res)
+    })
+    
+    app.post('/api/filterDates', function (req, res) {
+       return getDataToFilterDate(req, res, req.body.date)
     })
 }
 
