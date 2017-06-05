@@ -4,8 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import resource from 'vue-resource'
-Vue.use(resource)
+import VueAsyncData  from 'vue-async-data'
 
+Vue.use(resource)
+Vue.use(VueAsyncData)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

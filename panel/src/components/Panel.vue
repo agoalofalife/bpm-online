@@ -20,6 +20,7 @@
               <div class="control">
                 <div class="select is-fullwidth col-md-4">
                   <select class="form-control">
+                    <option  value="" disabled selected>Select one of the options</option>
                     <option  v-for="date in dateFilter">{{ date }}</option>
                   </select>
                 </div>
@@ -51,13 +52,6 @@
                 dateFilter : [],
                 error : false,
                 notRequest:'(Unfortunately you have no requests ...)',
-                params: {
-                    symbol: 'AAPL',
-                    numberOfDays: 450,
-                    dataPeriod: 'Month'
-                },
-                symbols: ['AAPL', 'MSFT', 'JNJ', 'GOOG'],
-                periods: ['Day', 'Week', 'Month', 'Quarter', 'Year'],
                 data: [],
                 labels: [],
                 isloading: false,
@@ -74,6 +68,22 @@
                     }
                 }
             }
+        },
+        asyncData() {
+            console.log( '?A' );
+            return this.$http({
+                url: '/api/listDates',
+            }).then((response) => {
+                this.error = false
+                console.log( 'response' );
+                return {
+                    dateFilter : JSON.parse(response.data).date
+                }
+
+//                this.dateFilter = JSON.parse(response.data).date
+            }).catch((error) => {
+                this.error = true
+            })
         },
         computed: {
             stockData () {
@@ -109,14 +119,14 @@
                     this.error = true
                 })
 
-                  this.$http({
-                    url: '/api/listDates',
-                }).then((response) => {
-                    this.dateFilter = JSON.parse(response.data).date
-                    this.error = false
-                }).catch((error) => {
-                    this.error = true
-                })
+//                  this.$http({
+//                    url: '/api/listDates',
+//                }).then((response) => {
+//                    this.dateFilter = JSON.parse(response.data).date
+//                    this.error = false
+//                }).catch((error) => {
+//                    this.error = true
+//                })
             }
         }
     }
