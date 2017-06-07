@@ -5,3 +5,7 @@ src/resource/logs/*
 src/resource
 cookie.txt
 tests/Coverage
+/panel/*
+!panel/dist
+
+
