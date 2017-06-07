@@ -41,7 +41,7 @@
 
 <script>
     import Chart from 'vue-bulma-chartjs'
-    const api = '/api/statistic-request'
+    const api = 'api/statistic-request'
 
     export default {
         components: {
@@ -88,7 +88,7 @@
         methods: {
             fetchDate(){
                 return this.$http({
-                    url: '/api/listDates',
+                    url: 'api/listDates',
                 }).then((response) => {
                 this.error = false
                 this.dateFilter = JSON.parse(response.data).date
@@ -115,7 +115,7 @@
                 })
             },
             loadData () {
-                 this.$http.post('/api/filterDates', {
+                 this.$http.post('api/filterDates', {
                     date : this.selectDate
                 }).then((response) => {
                      let dates = JSON.parse(response.data).date

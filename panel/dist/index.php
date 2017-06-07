@@ -5,7 +5,18 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require '../../vendor/autoload.php';
 const PATH = __DIR__ . '/../../src/resource/logs';
 
-$app = new \Slim\App;
+$app = new Slim\App();
+// --------------
+$app->add(function ($req, $res, $next) {
+    $response = $next($req, $res);
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+});
+// --------
+
+
 $app->get('/', function (Request $request, Response $response) {
     require_once('index.html');
 });

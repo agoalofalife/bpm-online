@@ -7,6 +7,7 @@ import resource from 'vue-resource'
 
 
 Vue.use(resource)
+Vue.url.options.root = "http://localhost:9000/"
 
 Vue.config.productionTip = false
 
