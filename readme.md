@@ -524,6 +524,7 @@ Or by using the Facade , registering it in a file`config/app.php`:
         $read->amount(1);
     })->get();
 ```
+## Tool
 <a name="Tool_en"></a>
 
 You need to start the server by running the command :
