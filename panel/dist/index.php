@@ -59,13 +59,13 @@ $app->post('/api/filterDates', function (Request $request, Response $response) {
 });
 
 $app->get('/api/listDates', function (Request $request, Response $response) {
-    $data             = [];
     $dateList         = [];
+    $data['date']     = [];
     array_map(function($file) use (&$dateList, &$data){
         preg_match_all( '/[0-9]{4}-[0-9]{2}-[0-9]{2}/', file_get_contents(PATH .'/'. $file), $matchesDate);
-        $data['date']      = array_merge($dateList, array_shift($matchesDate));
+        $data['date']      = array_merge( $data['date'], array_shift($matchesDate));
     }, getFiles(PATH));
-    $data['date'] =array_unique($data['date']);
+    $data['date'] = array_unique($data['date']);
     return $response->withJson(json_encode($data), 200);
 
 });

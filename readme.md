@@ -26,6 +26,7 @@
 - [Обработчики  ответов](#Handler)
 - [Логирование](#Log)
 - [Интеграция с Laravel](#Laravel)
+- [Инструмент](#Tools)
 
 
 
@@ -250,6 +251,18 @@ $handler = $kernel->action('delete:xml', function ($creator){
     })->get();
 ```
 
+<a name="Tools"></a>
+## Инструмент
+
+Вам необходимо запустить сервер выполнив команду
+
+```
+vendor/bin/panel-server
+```
+Когда перейдете по адресу то увидите перед собой , статистику продолжительности ваших запросов в Bpm.
+Это программа парсит ваш лог файл который находиться по адресу src/resource/logs
+
+![alt text](http://g.recordit.co/n5sFQxDnIr.gif)
 
  <a name="EN"></a>
 
@@ -270,6 +283,7 @@ The package provides a convenient interface to work with [API Terrasoft](https:/
 - [Handler Response](#Handler_en)
 - [Log](#Log_en)
 - [Integration with Laravel](#Laravel_en)
+- [Tool](#Tool_en)
 
 <a name="Installation_en"></a>
 ## Install
@@ -510,3 +524,14 @@ Or by using the Facade , registering it in a file`config/app.php`:
         $read->amount(1);
     })->get();
 ```
+<a name="Tool_en"></a>
+
+You need to start the server by running the command :
+
+```
+vendor/bin/panel-server
+```
+When you click on the address you will see a statistics of the duration of your queries in Bpm.
+This program parses your log file which is located at the address src/resource/logs
+
+![alt text](http://g.recordit.co/n5sFQxDnIr.gif)
