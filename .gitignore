@@ -7,5 +7,5 @@ cookie.txt
 tests/Coverage
 /panel/*
 !panel/dist
-
+*~
 

@@ -3,7 +3,7 @@
 
 system('echo Start server localhost:9000');
 system('echo Please open this link in browser...');
-system('php -S localhost:9000 -t panel/dist/', $value);
+system("php -S localhost:9000 -t vendor/agoalofalife/bpm-online/panel/dist/", $value);
 
 
 
