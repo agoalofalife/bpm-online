@@ -3,7 +3,7 @@
     "description": "Using the API BPM Terrasoft",
     "type": "no",
     "license": "MIT",
-    "version" : "2.1.0",
+    "version" : "2.1.1",
     "keywords": [
         "bpm-online",
         "terrasoft-http",
@@ -13,9 +13,9 @@
     "require": {
         "php": ">=5.6.4",
         "beberlei/assert": "^2.5",
-        "illuminate/container": "5.4.*",
-        "illuminate/support": "5.4.*",
-        "illuminate/config": "5.4.*",
+        "illuminate/container": "~5.5",
+        "illuminate/support": "~5.5",
+        "illuminate/config": "~5.5",
         "guzzlehttp/guzzle": "~6.0",
         "symfony/var-dumper": "^3.2",
         "monolog/monolog": "1.*",
@@ -25,7 +25,7 @@
         "fzaninotto/faker": "^1.6",
         "mockery/mockery": "^0.9.9",
         "phpunit/phpunit": "5.7.*",
-        "php-mock/php-mock-mockery": "dev-master"
+        "php-mock/php-mock-mockery": "*"
     },
     "autoload": {
         "psr-4": {
@@ -46,5 +46,7 @@
     },
     "bin": [
         "panel-server"
-    ]
+    ],
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }
