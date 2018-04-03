@@ -6,9 +6,7 @@
     "version" : "2.1.2",
     "keywords": [
         "bpm-online",
-        "terrasoft-http",
         "bpm",
-        "terrasoft"
     ],
     "require": {
         "php": ">=5.6.4",
