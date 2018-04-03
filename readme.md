@@ -12,7 +12,7 @@
 **Что это такое?**
 
 
-Пакет предоставляет удобный интерфейс для работы с [API Terrasoft](https://academy.terrasoft.ru/documents/technic-sdk/7-8/rabota-s-obektami-bpmonline-po-protokolu-odata-s-ispolzovaniem-http-zaprosov) через протокол OData.
+Пакет предоставляет удобный интерфейс для работы с [API Bpm’online](https://academy.terrasoft.ru/documents/technic-sdk/7-8/rabota-s-obektami-bpmonline-po-protokolu-odata-s-ispolzovaniem-http-zaprosov) через протокол OData.
 
 - [Установка](#Installation)
 - [Настройка конфигураций](#Config)
@@ -151,7 +151,7 @@ filterConstructor('Id eq guid\'00000000-0000-0000-0000-000000000000\'');
 ```
 ->amount(100)
 ```
-`Имейте в виду что вы можете комбинировать методы согласно документации Terrasoft`
+`Имейте в виду что вы можете комбинировать методы согласно документации Bpm’online`
 
 <a name="Create"></a>
 ## Create
@@ -269,7 +269,7 @@ vendor/bin/panel-server
 
 **What is it ?**
 
-The package provides a convenient interface to work with [API Terrasoft](https://academy.terrasoft.ru/documents/technic-sdk/7-8/rabota-s-obektami-bpmonline-po-protokolu-odata-s-ispolzovaniem-http-zaprosov) through the Protocol
+The package provides a convenient interface to work with [API Bpm’online](https://academy.terrasoft.ru/documents/technic-sdk/7-8/rabota-s-obektami-bpmonline-po-protokolu-odata-s-ispolzovaniem-http-zaprosov) through the Protocol
 
 - [Install](#Installation_en)
 - [Configurations](#Config_en)
@@ -424,7 +424,7 @@ To set the maximum number of records
 ->amount(100)
 ```
 `Keep in mind that you can combine the methods according to the documentation
-Terrasoft`
+Bpm’online`
 
 <a name="Create_en"></a>
 ## Create
