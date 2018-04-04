@@ -6,7 +6,7 @@
     "version" : "2.1.2",
     "keywords": [
         "bpm-online",
-        "bpm",
+        "bpm"
     ],
     "require": {
         "php": ">=5.6.4",
