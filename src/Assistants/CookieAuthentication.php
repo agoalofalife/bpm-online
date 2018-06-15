@@ -56,7 +56,7 @@ class CookieAuthentication implements Authentication
 
             $response = curl_exec($curl);
             curl_close($curl);
-            ob_clean();
+            @ob_clean();
 
             return $response;
     }
