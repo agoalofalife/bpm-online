@@ -121,6 +121,18 @@ class XmlHandler implements Handler, Collection
     {
         return $this->validText;
     }
+    
+     /**
+     * @return array|null
+     */
+    public function getError()
+    {
+        if (isset($this->response->innererror)) {
+            return (array)$this->response->innererror;
+        }
+
+        return null;
+    }
 
     /**
      * @return array|null
